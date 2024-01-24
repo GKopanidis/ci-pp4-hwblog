@@ -40,6 +40,16 @@
             <strong class="text-secondary">
                 <i class="far fa-comments"></i> {{ comment_count }}
             </strong>
+            {% if user.is_authenticated %}
+                {% if liked_by_user %}
+                    <a href="{% url 'unlike_post' post.id %}"><i class="fas fa-heart"></i></a>
+                {% else %}
+                    <a href="{% url 'like_post' post.id %}"><i class="far fa-heart"></i></a>
+                {% endif %}
+            {% else %}
+                <i class="far fa-heart"></i>
+            {% endif %}
+            {{ post.likes.all|length }}
         </div>
         <div class="col-12">
             <hr>

@@ -8,9 +8,6 @@ STATUS = ((0, "Draft"), (1, "Published"))
 
 
 class Post(models.Model):
-    """
-    Stores a single blog post entry related to :model:`auth.User`.
-    """
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
     author = models.ForeignKey(
@@ -29,16 +26,22 @@ class Post(models.Model):
     def __str__(self):
         return f"{self.title} | written by {self.author}"
 
+    @property
+    def likes(self):
+        return Like.objects.filter(post=self)
+
+    def is_liked_by_user(self, user):
+        return self.likes.filter(user=user).exists()
+
+
 
 class Comment(models.Model):
-    """
-    Stores a single comment entry related to :model:`auth.User`
-    and :model:`blog.Post`.
-    """
-    post = models.ForeignKey(Post, on_delete=models.CASCADE,
-                             related_name="comments")
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name="comments"
+    )
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="commenter")
+        User, on_delete=models.CASCADE, related_name="comments"
+    )
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(default=False)
@@ -48,3 +51,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment {self.body} by {self.author}"
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
