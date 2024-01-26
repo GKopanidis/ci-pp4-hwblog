@@ -35,6 +35,9 @@ class Post(models.Model):
     def is_liked_by_user(self, user):
         return self.likes.filter(user=user).exists()
 
+    def get_favorite_count(self):
+        return Favorite.objects.filter(post=self).count()
+
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
@@ -53,13 +56,15 @@ class Like(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
 
-# New model for Favorites
 class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='favorited_by')
 
     class Meta:
-        unique_together = ('user', 'post')  # Prevents duplicates
+        unique_together = ('user', 'post')
 
     def __str__(self):
         return f"{self.user.username} favorited {self.post.title}"
+
+    def get_favorite_count(self):
+        return Favorite.objects.filter(post=self.post).count()
