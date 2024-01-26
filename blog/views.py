@@ -172,9 +172,11 @@ def unlike_post(request, post_id):
 
 def post_list_by_category(request, category):
     posts = Post.objects.filter(categories__name=category)
+    categories = Category.objects.all()
     context = {
         'post_list': posts,
-        'categories': Category.objects.all(),
+        'categories': categories,
+        'category_name': category,
     }
     return render(request, 'blog/index.html', context)
 

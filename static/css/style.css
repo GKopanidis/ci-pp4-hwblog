@@ -45,6 +45,10 @@ body {
     text-decoration: underline;
 }
 
+.no-content {
+    text-align: center;
+    font-size: 2rem;
+}
 
 .main-bg {
     background-color: #F9FAFC;
