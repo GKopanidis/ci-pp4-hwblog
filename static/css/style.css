@@ -3,7 +3,7 @@ body {
 }
 
 .brand {
-    font-family: Lato, sans-serif;
+    font-family: Roboto, sans-serif;
     font-size: 1.4rem;
     font-weight: 700;
     color: #4A4A4F;
@@ -25,6 +25,27 @@ body {
     background-color: #445261;
 }
 
+.categories-header {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.categories-bar {
+    background-color: #f8f9fa;
+    padding: 10px 0;
+}
+
+.categories-bar .nav-link {
+    color: #020202;
+    margin: 0 10px;
+}
+
+.categories-bar .nav-link:hover {
+    color: #1038e8;
+    text-decoration: underline;
+}
+
+
 .main-bg {
     background-color: #F9FAFC;
 }
@@ -36,6 +57,7 @@ body {
 
 .image-container {
     position: relative;
+    overflow: hidden;
 }
 
 .image-flash {
@@ -51,7 +73,25 @@ body {
     height: auto;
 }
 
+.card-img-top {
+    transition: transform 0.3s ease;
+    display: block;
+}
+
+
+.card-img-top:hover {
+    transform: scale(1.1);
+}
+
+
 .author {
+    color: white;
+    margin: 4px;
+    text-transform: uppercase;
+}
+
+.category {
+    font-size: 0.7em;
     color: white;
     margin: 4px;
     text-transform: uppercase;
@@ -102,7 +142,7 @@ body {
 
 .post-link:hover,
 .page-link {
-    color: #E84610;
+    color: #1038e8;
 }
 
 .post-title {
@@ -111,6 +151,11 @@ body {
 }
 
 .post-subtitle {
+    margin-left: 5%;
+    color: lightgray;
+}
+
+.post-category {
     margin-left: 5%;
     color: lightgray;
 }

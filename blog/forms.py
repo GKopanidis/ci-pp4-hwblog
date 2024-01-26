@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment
+from .models import Comment, Category, Post
 
 
 class CommentForm(forms.ModelForm):
@@ -12,3 +12,13 @@ class CommentForm(forms.ModelForm):
         """
         model = Comment
         fields = ('body',)
+
+class BlogPostForm(forms.ModelForm):
+    categories = forms.ModelMultipleChoiceField(
+        queryset=Category.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+    )
+
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'categories']

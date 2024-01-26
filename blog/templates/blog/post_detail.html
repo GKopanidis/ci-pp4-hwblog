@@ -11,6 +11,13 @@
                 <h1 class="post-title">{{ post.title }}</h1>
                 <!-- Post author goes before the | the post's created date goes after -->
                 <p class="post-subtitle">{{ post.author }} | {{ post.created_on }}</p>
+                <!-- Post category  -->
+                <p class="post-category">
+                    {% for category in post.categories.all %}
+                        Category: {{ category.name }}
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
             </div>
             <div class="d-none d-md-block col-md-6 masthead-image">
                 {% if "placeholder" in post.featured_image.url %}
@@ -42,14 +49,19 @@
             </strong>
             {% if user.is_authenticated %}
                 {% if liked_by_user %}
-                    <a href="{% url 'unlike_post' post.id %}"><i class="fas fa-heart"></i></a>
+                    <a href="{% url 'unlike_post' post.id %}"><i class="fas fa-heart"></i></a> {{ post.likes.all|length }}
                 {% else %}
-                    <a href="{% url 'like_post' post.id %}"><i class="far fa-heart"></i></a>
+                    <a href="{% url 'like_post' post.id %}"><i class="far fa-heart"></i></a> {{ post.likes.all|length }}
+                {% endif %}
+                {% if favorited_by_user %}
+                    <a href="{% url 'unfavorite_post' post.id %}"><i class="fas fa-star"></i></a> {{ post.favorited_by.all|length }}
+                {% else %}
+                    <a href="{% url 'favorite_post' post.id %}"><i class="far fa-star"></i></a> {{ post.favorited_by.all|length }}
                 {% endif %}
             {% else %}
-                <i class="far fa-heart"></i>
+                <i class="far fa-heart"></i> {{ post.likes.all|length }}
+                <i class="far fa-star"></i> {{ post.favorited_by.all|length }}
             {% endif %}
-            {{ post.likes.all|length }}
         </div>
         <div class="col-12">
             <hr>
@@ -95,7 +107,7 @@
                     <button id="submitButton" type="submit" class="btn btn-signup btn-lg">Submit</button>
                 </form>
                 {% else %}
-                <p>Log in to leave a comment</p>
+                <p>Log in to leave a comment or a like</p>
                 {% endif %}
             </div>
         </div>
@@ -121,7 +133,3 @@
 </div>
 
 {% endblock content %}
-
-{% block extras %}
-<script src="{% static 'js/comments.js' %}"></script>
-{% endblock %}

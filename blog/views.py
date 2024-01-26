@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from .models import Post, Comment, Like
+from .models import Post, Comment, Like, Category, Favorite
 from .forms import CommentForm
 
 # Create your views here.
@@ -27,6 +27,11 @@ class PostList(generic.ListView):
     template_name = "blog/index.html"
     paginate_by = 6
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
 
 def post_detail(request, slug):
     """
@@ -44,6 +49,8 @@ def post_detail(request, slug):
         An instance of :form:`blog.CommentForm`
     ``liked_by_user``
         Boolean indicating whether the user has liked the post.
+    ``favorited_by_user``
+        Boolean indicating whether the user has favorited the post.
 
     **Template:**
 
@@ -52,13 +59,13 @@ def post_detail(request, slug):
     queryset = Post.objects.filter(status=1)
     post = get_object_or_404(queryset, slug=slug)
     comments = post.comments.all().order_by("-created_on")
-    comment_count = post.comments.filter(approved=True).count()
-    
-    # Set liked_by_user to False if the user is not authenticated
+    comment_count = post.comments.filter(approved=True).count()  
+    # Set liked_by_user and favorited_by_user to False if the user is not authenticated
     liked_by_user = False
+    favorited_by_user = False
     if request.user.is_authenticated:
         liked_by_user = post.likes.filter(user=request.user).exists()
-        
+        favorited_by_user = post.favorited_by.filter(user=request.user).exists()
     if request.method == "POST":
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
@@ -82,6 +89,7 @@ def post_detail(request, slug):
             "comment_count": comment_count,
             "comment_form": comment_form,
             "liked_by_user": liked_by_user,
+            "favorited_by_user": favorited_by_user,
         },
     )
 
@@ -160,4 +168,38 @@ def unlike_post(request, post_id):
         like.delete()
 
     messages.success(request, 'Post unliked successfully!')
+    return redirect('post_detail', slug=post.slug)
+
+def post_list_by_category(request, category):
+    posts = Post.objects.filter(categories__name=category)
+    context = {
+        'post_list': posts,
+        'categories': Category.objects.all(),
+    }
+    return render(request, 'blog/index.html', context)
+
+
+def favorite_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    favorite, created = Favorite.objects.get_or_create(user=request.user, post=post)
+
+    if created:
+        messages.success(request, 'Added to favorites!')
+    else:
+        favorite.delete()  # Löschen Sie den Favoriten, wenn er bereits existiert
+        messages.success(request, 'Removed from favorites!')
+
+    return redirect('post_detail', slug=post.slug)
+
+
+def unfavorite_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    favorite = Favorite.objects.filter(user=request.user, post=post).first()
+
+    if favorite:
+        favorite.delete()
+        messages.success(request, 'Removed from favorites!')
+    else:
+        messages.success(request, 'Not in favorites!')
+
     return redirect('post_detail', slug=post.slug)
