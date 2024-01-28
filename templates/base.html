@@ -13,6 +13,15 @@
 <head>
     <title>HW|Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Meta tags for search engines --> 
+    <meta name="description" content="HWBlog - Your Source for Hardware, Coding, and 3D Printing Insights"> 
+    <meta name="keywords" content="Explore the latest trends, tutorials, and reviews in the world of hardware, coding, and 3D printing on HWBlog. Get expert insights and stay updated with our informative articles."> 
+
+    <!-- Favicon--> 
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}"> 
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}"> 
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
 
     <!-- Google Fonts CSS -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -103,10 +112,26 @@
         <p class="m-0 text-center text-white">
             {% block copyright %}Copyright &#169; 2024 Georgios Kopanidis{% endblock copyright %}
           </p>
-        <p class="m-0 text-center text-white">Follow us: <i class="fab fa-facebook-square ms-3"></i>
-            <i class="fab fa-twitter-square ms-3"></i>
-            <i class="fab fa-instagram-square ms-3"></i>
-            <i class="fab fa-youtube-square ms-3"></i>
+        <p class="m-0 text-center text-white">
+            Follow us: 
+            <a href="https://www.facebook.com/" class="text-white no-underline" target="_blank" rel="noopener" aria-label="Visit our Facebook page (opens in a new tab)">
+                <i class="fab fa-facebook-square ms-3"></i>
+            </a>
+            <a href="https://www.twitter.com/" class="text-white no-underline" target="_blank" rel="noopener" aria-label="Visit our Twitter profile (opens in a new tab)">
+                <i class="fab fa-twitter-square ms-3"></i>
+            </a>
+            <a href="https://www.instagram.com/" class="text-white no-underline" target="_blank" rel="noopener" aria-label="Visit our Instagram profile (opens in a new tab)">
+                <i class="fab fa-instagram-square ms-3"></i>
+            </a>
+            <a href="https://www.youtube.com/" class="text-white no-underline" target="_blank" rel="noopener" aria-label="Visit our YouTube channel (opens in a new tab)">
+                <i class="fab fa-youtube-square ms-3"></i>
+            </a>
+            <a href="https://www.github.com/" class="text-white no-underline" target="_blank" rel="noopener" aria-label="Visit our GitHub profile (opens in a new tab)">
+                <i class="fab fa-github-square ms-3"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/" class="text-white no-underline" target="_blank" rel="noopener" aria-label="Visit our LinkedIn profile (opens in a new tab)">
+                <i class="fab fa-linkedin ms-3"></i>
+            </a>
         </p>
     </footer>
 

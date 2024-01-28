@@ -212,3 +212,7 @@ body {
 .approval {
     color: rgb(222, 146, 168);
 }
+
+.no-underline {
+    text-decoration: none;
+}
