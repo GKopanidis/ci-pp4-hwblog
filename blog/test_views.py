@@ -7,8 +7,9 @@ from .models import Post
 # Create your tests here.
 
 class TestBlogViews(TestCase):
-
-
+    """
+    Test case for the blog views.
+    """
     def setUp(self):
         """Create a superuser and a blog post"""
         self.user = User.objects.create_superuser(
