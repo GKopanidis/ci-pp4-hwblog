@@ -44,19 +44,19 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <strong class="text-secondary">
+            <strong class="text-secondary" title="Number of comments">
                 <i class="far fa-comments"></i> {{ comment_count }}
             </strong>
             {% if user.is_authenticated %}
                 {% if liked_by_user %}
-                    <a href="{% url 'unlike_post' post.id %}"><i class="fas fa-heart"></i></a> {{ post.likes.all|length }}
+                    <a href="{% url 'unlike_post' post.id %}" title="Unlike this post"><i class="fas fa-heart"></i></a> {{ post.likes.all|length }}
                 {% else %}
-                    <a href="{% url 'like_post' post.id %}"><i class="far fa-heart"></i></a> {{ post.likes.all|length }}
+                    <a href="{% url 'like_post' post.id %}" title="Like this post"><i class="far fa-heart"></i></a> {{ post.likes.all|length }}
                 {% endif %}
                 {% if favorited_by_user %}
-                    <a href="{% url 'unfavorite_post' post.id %}"><i class="fas fa-star"></i></a> {{ post.favorited_by.all|length }}
+                    <a href="{% url 'unfavorite_post' post.id %}" title="Remove from favorites"><i class="fas fa-star"></i></a> {{ post.favorited_by.all|length }}
                 {% else %}
-                    <a href="{% url 'favorite_post' post.id %}"><i class="far fa-star"></i></a> {{ post.favorited_by.all|length }}
+                    <a href="{% url 'favorite_post' post.id %}" title="Add to favorites"><i class="far fa-star"></i></a> {{ post.favorited_by.all|length }}
                 {% endif %}
             {% else %}
                 <i class="far fa-heart"></i> {{ post.likes.all|length }}
