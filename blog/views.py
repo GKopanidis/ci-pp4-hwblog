@@ -2,8 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from .models import Post, Comment, Like, Category, Favorite
-from .forms import CommentForm
+from .forms import CommentForm, Favorite
 
 # Create your views here.
 
@@ -205,3 +206,9 @@ def unfavorite_post(request, post_id):
         messages.success(request, 'Not in favorites!')
 
     return redirect('post_detail', slug=post.slug)
+
+
+@login_required
+def favorite_list(request):
+    favorites = Favorite.objects.filter(user=request.user)
+    return render(request, 'blog/favorite_list.html', {'favorites': favorites})

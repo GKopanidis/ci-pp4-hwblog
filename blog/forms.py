@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment, Category, Post
+from .models import Comment, Category, Post, Favorite
 
 
 class CommentForm(forms.ModelForm):
@@ -22,3 +22,8 @@ class BlogPostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'categories']
+
+class FavoriteForm(forms.ModelForm):
+    class Meta:
+        model = Favorite
+        fields = []

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1>My Favorites</h1>
+            {% if favorites %}
+                <ul class="list-unstyled">
+                    {% for favorite in favorites %}
+                        <li class="my-3">
+                            <a href="{% url 'post_detail' slug=favorite.post.slug %}" class="text-decoration-none">
+                                <h3>{{ favorite.post.title }}</h3>
+                                <img src="{{ favorite.post.featured_image.url }}" alt="{{ favorite.post.title }}" style="max-width: 300px; height: auto;">
+                            </a>
+                            <hr>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>You haven't added any favorites yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
