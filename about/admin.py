@@ -17,3 +17,4 @@ class CollaborateRequestAdmin(admin.ModelAdmin):
     Lists message and read fields for display in admin
     """
     list_display = ('message', 'read',)
+    fields = ['name', 'email', 'phone', 'message']

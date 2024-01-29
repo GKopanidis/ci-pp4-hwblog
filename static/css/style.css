@@ -60,6 +60,7 @@ body {
 }
 
 .image-container {
+    border-radius: 15px;
     position: relative;
     overflow: hidden;
 }
@@ -80,11 +81,32 @@ body {
 .card-img-top {
     transition: transform 0.3s ease;
     display: block;
+    height: auto;
+    margin: auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 
 .card-img-top:hover {
     transform: scale(1.1);
+}
+
+.img-hover-zoom {
+    transition: transform 0.3s ease;
+    display: block;
+    max-width: 300px;
+    height: auto;
+    margin: auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.img-hover-zoom:hover {
+    transform: scale(1.05);
+}
+
+.fav-list {
+    overflow: hidden;
 }
 
 
