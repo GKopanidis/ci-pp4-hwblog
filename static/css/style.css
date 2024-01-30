@@ -80,9 +80,11 @@ body {
 }
 
 .card-img-top {
+    height: 350px;
+    width: 650px;
+    object-fit: cover;
     transition: transform 0.3s ease;
     display: block;
-    height: auto;
     margin: auto;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
