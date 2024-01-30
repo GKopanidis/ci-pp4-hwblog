@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.views import generic
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -178,6 +179,7 @@ def post_list_by_category(request, category):
         'post_list': posts,
         'categories': categories,
         'category_name': category,
+        'current_category': category,
     }
     return render(request, 'blog/index.html', context)
 

@@ -11,10 +11,12 @@
             </div>
             <div class="categories-bar">
                 <ul class="nav justify-content-center">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">All</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if not current_category %}active-category{% endif %}" href="{% url 'home' %}">All</a>
+                    </li>
                     {% for category in categories %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'post_list_by_category' category.name %}">{{ category.name }}</a>
+                            <a class="nav-link {% if current_category == category.name %}active-category{% endif %}" href="{% url 'post_list_by_category' category.name %}">{{ category.name }}</a>
                         </li>
                     {% endfor %}
                 </ul>
@@ -34,36 +36,40 @@
                         <p>No content available in the "{{ category_name }}" category.</p>
                     </div>
                 {% else %}
-                    {% for post in post_list %}
-                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <div class="image-container">
+                {% for post in post_list %}
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <!-- Image Container -->
+                            <div class="image-container">
+                                <a href="{% url 'post_detail' post.slug %}">
                                     {% if "placeholder" in post.featured_image.url %}
                                         <img class="card-img-top" src="{% static 'images/default.webp' %}" alt="placeholder image">
                                     {% else %}
                                         <img class="card-img-top" src="{{ post.featured_image.url }}" alt="{{ post.title }}">
                                     {% endif %}
-                                    <div class="image-flash">
-                                        <p class="author">Author: {{ post.author }}</p>
-                                        <p class="category">
-                                            {% for category in post.categories.all %}
-                                                Category: {{ category.name }}
-                                                {% if not forloop.last %}, {% endif %}
-                                            {% endfor %}
-                                        </p>
-                                    </div>
-                                </div>
-                                <a href="{% url 'post_detail' post.slug %}" class="post-link">
-                                    <h2 class="card-title">{{ post.title }}</h2>
-                                    <p class="card-text">{{ post.excerpt }}</p>
                                 </a>
-                                <hr>
-                                <p class="card-text text-muted h6">{{ post.created_on }}</p>
+                                <div class="image-flash">
+                                    <p class="author">Author: {{ post.author }}</p>
+                                    <p class="category">
+                                        {% for category in post.categories.all %}
+                                            Category: {{ category.name }}
+                                            {% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                </div>
                             </div>
+                            <!-- Post Link -->
+                            <a href="{% url 'post_detail' post.slug %}" class="post-link">
+                                <h2 class="card-title">{{ post.title }}</h2>
+                                <p class="card-text">{{ post.excerpt }}</p>
+                            </a>
+                            <hr>
+                            <p class="card-text text-muted h6">{{ post.created_on }}</p>
                         </div>
                     </div>
-                    {% endfor %}
+                </div>
+                {% endfor %}
                 {% endif %}
             </div>
         </div>
