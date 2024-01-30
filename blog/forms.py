@@ -14,6 +14,22 @@ class CommentForm(forms.ModelForm):
         fields = ('body',)
 
 class BlogPostForm(forms.ModelForm):
+    """
+    This form is used for creating or editing a blog post.
+
+    Fields:
+        - title (CharField): The title of the blog post.
+        - content (TextField): The main content of the blog post.
+        - categories (ModelMultipleChoiceField): A multiple-choice field for selecting post categories.
+
+    Attributes:
+        categories (ModelMultipleChoiceField): A field that allows users to select multiple categories for the blog post.
+
+    Meta:
+        model (Post): Specifies the model associated with this form.
+        fields (list): Specifies the fields from the model to include in the form.
+
+    """
     categories = forms.ModelMultipleChoiceField(
         queryset=Category.objects.all(),
         widget=forms.CheckboxSelectMultiple,
@@ -24,6 +40,17 @@ class BlogPostForm(forms.ModelForm):
         fields = ['title', 'content', 'categories']
 
 class FavoriteForm(forms.ModelForm):
+    """
+    This form is used for marking a post as a favorite.
+
+    Fields:
+        This form has no visible fields, as it's used to mark a post as a favorite without additional user input.
+
+    Meta:
+        model (Favorite): Specifies the model associated with this form.
+        fields (list): Specifies the fields from the model to include in the form, which is an empty list as it doesn't require user input.
+
+    """
     class Meta:
         model = Favorite
         fields = []

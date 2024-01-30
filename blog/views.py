@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from .models import Post, Comment, Like, Category, Favorite
-from .forms import CommentForm, Favorite
+from .forms import CommentForm
 
 # Create your views here.
 
@@ -61,7 +61,7 @@ def post_detail(request, slug):
     queryset = Post.objects.filter(status=1)
     post = get_object_or_404(queryset, slug=slug)
     comments = post.comments.all().order_by("-created_on")
-    comment_count = post.comments.filter(approved=True).count()  
+    comment_count = post.comments.filter(approved=True).count()
     # Set liked_by_user and favorited_by_user to False if the user is not authenticated
     liked_by_user = False
     favorited_by_user = False
@@ -153,6 +153,16 @@ def comment_delete(request, slug, comment_id):
     return HttpResponseRedirect(reverse('post_detail', args=[slug]))
 
 def like_post(request, post_id):
+    """
+    This function handles the 'liking' of a post by a user.
+
+    Args:
+        request: The HTTP request object.
+        post_id: The unique identification of the post to be liked.
+
+    Returns:
+        A redirection to the detail view of the liked post.
+    """
     post = get_object_or_404(Post, id=post_id)
     like, created = Like.objects.get_or_create(user=request.user, post=post)
 
@@ -163,6 +173,16 @@ def like_post(request, post_id):
     return redirect('post_detail', slug=post.slug)
 
 def unlike_post(request, post_id):
+    """
+    This function handles the 'unliking' of a post by a user.
+
+    Args:
+        request: The HTTP request object.
+        post_id: The unique identification of the post to be unliked.
+
+    Returns:
+        A redirection to the detail view of the unliked post.
+    """
     post = get_object_or_404(Post, id=post_id)
     like = Like.objects.filter(user=request.user, post=post).first()
 
@@ -173,6 +193,16 @@ def unlike_post(request, post_id):
     return redirect('post_detail', slug=post.slug)
 
 def post_list_by_category(request, category):
+    """
+    This function displays a list of posts based on a specific category.
+
+    Args:
+        request: The HTTP request object.
+        category: The name of the category by which the posts should be filtered.
+
+    Returns:
+        An HTML page displaying a list of posts from the specified category.
+    """
     posts = Post.objects.filter(categories__name=category)
     categories = Category.objects.all()
     context = {
@@ -185,19 +215,39 @@ def post_list_by_category(request, category):
 
 
 def favorite_post(request, post_id):
+    """
+    This function allows a user to add or remove a post from their favorites.
+
+    Args:
+        request: The HTTP request object.
+        post_id: The unique identification of the post to be added or removed from favorites.
+
+    Returns:
+        A redirection to the detail view of the respective post.
+    """
     post = get_object_or_404(Post, id=post_id)
     favorite, created = Favorite.objects.get_or_create(user=request.user, post=post)
 
     if created:
         messages.success(request, 'Added to favorites!')
     else:
-        favorite.delete()  # Löschen Sie den Favoriten, wenn er bereits existiert
+        favorite.delete()
         messages.success(request, 'Removed from favorites!')
 
     return redirect('post_detail', slug=post.slug)
 
 
 def unfavorite_post(request, post_id):
+    """
+    This function allows a user to remove a post from their favorites.
+
+    Args:
+        request: The HTTP request object.
+        post_id: The unique identification of the post to be removed from favorites.
+
+    Returns:
+        A redirection to the detail view of the respective post.
+    """
     post = get_object_or_404(Post, id=post_id)
     favorite = Favorite.objects.filter(user=request.user, post=post).first()
 
@@ -212,5 +262,14 @@ def unfavorite_post(request, post_id):
 
 @login_required
 def favorite_list(request):
+    """
+    This function displays a list of posts marked as favorites by a user.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        An HTML page displaying a list of posts marked as favorites.
+    """
     favorites = Favorite.objects.filter(user=request.user)
     return render(request, 'blog/favorite_list.html', {'favorites': favorites})
