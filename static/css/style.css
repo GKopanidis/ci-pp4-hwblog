@@ -176,9 +176,22 @@ body {
     color: #445261;
 }
 
-.post-link:hover,
+/* .post-link:hover,
 .page-link {
     color: #020202;
+} */
+
+.page-link {
+    background-color: #188181;
+    color: #fff;
+    border-radius: 4px;
+}
+
+.page-link:hover,
+.page-link:active {
+    background-color: #fff;
+    color: #23BBBB;
+    border-radius: 4px;
 }
 
 .post-title {
