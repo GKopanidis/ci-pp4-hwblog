@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
@@ -184,3 +185,11 @@ class Favorite(models.Model):
             int: The count of users who have marked the post as a favorite.
         """
         return Favorite.objects.filter(post=self.post).count()
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    profile_image = CloudinaryField('image', default='placeholder')
+    about = models.TextField("About me", blank=True)
+
+    def __str__(self):
+        return self.user.username

@@ -4,8 +4,8 @@ from django.views import generic
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from .models import Post, Comment, Like, Category, Favorite
-from .forms import CommentForm
+from .models import Post, Comment, Like, Category, Favorite, UserProfile
+from .forms import CommentForm, UserForm, UserProfileForm
 
 # Create your views here.
 
@@ -273,3 +273,41 @@ def favorite_list(request):
     """
     favorites = Favorite.objects.filter(user=request.user)
     return render(request, 'blog/favorite_list.html', {'favorites': favorites})
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Profile updated.')
+            return redirect('profile') 
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = UserProfileForm(instance=request.user.userprofile)
+
+    return render(request, 'blog/edit_profile.html', {
+        'user_form': user_form,
+        'profile_form': profile_form
+    })
+
+@login_required
+def profile_view(request):
+    """
+    This view displays the user's profile.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        An HTML page displaying the user's profile.
+    """
+    UserProfile.objects.get_or_create(user=request.user)
+
+    return render(request, 'blog/profile.html', {'user': request.user})
+
+def not_logged_in(request):
+    return render(request, 'blog/not_logged_in.html')

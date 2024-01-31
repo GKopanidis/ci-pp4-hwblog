@@ -1,5 +1,6 @@
 from django import forms
-from .models import Comment, Category, Post, Favorite
+from django.contrib.auth.models import User
+from .models import Comment, Category, Post, Favorite, UserProfile
 
 
 class CommentForm(forms.ModelForm):
@@ -54,3 +55,13 @@ class FavoriteForm(forms.ModelForm):
     class Meta:
         model = Favorite
         fields = []
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['profile_image', 'about']
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email']

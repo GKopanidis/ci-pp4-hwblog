@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+
+        <div class="col-12 col-md-4 text-center">
+            {% if "placeholder" in user.userprofile.profile_image.url %}
+                <img src="{% static 'images/nobody.webp' %}" class="profile-image" alt="{{ user.username }}">
+            {% else %}
+                <img src="{{ user.userprofile.profile_image.url }}" class="profile-image" alt="{{ user.username }}">
+            {% endif %}
+        </div>
+
+        <div class="col-12 col-md-8">
+            <h2>{{ user.username }}</h2>
+            <p>About me:</p> 
+            <p>{{ user.userprofile.about | safe }}</p>
+
+            <a href="{% url 'edit_profile' %}" class="btn btn-secondary">Edit Profile</a>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">Edit Profile</h1>
+            <form method="post" enctype="multipart/form-data" class="mt-4">
+                {% csrf_token %}
+                {{ user_form|crispy }}
+                <div class="mb-3">
+                    <label for="id_profile_image" class="form-label">Profile Image</label>
+                    <div>
+                        <strong>Currently:</strong>
+                        {% if "placeholder" in user.userprofile.profile_image.url %}
+                            <img src="{% static 'images/nobody.webp' %}" alt="Placeholder image" style="max-width: 100px; max-height: 100px;">
+                        {% else %}
+                            <img src="{{ user.userprofile.profile_image.url }}" alt="Current profile image" style="max-width: 100px; max-height: 100px;">
+                        {% endif %}
+                    </div>
+                    {{ profile_form.profile_image }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_about" class="form-label">About Me</label>
+                    <br>
+                    {{ profile_form.about }}
+                </div>
+                <button type="submit" class="btn btn-secondary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
