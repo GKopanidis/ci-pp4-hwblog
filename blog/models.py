@@ -187,6 +187,26 @@ class Favorite(models.Model):
         return Favorite.objects.filter(post=self.post).count()
 
 class UserProfile(models.Model):
+    """
+    A model representing user profiles.
+
+    This model extends the built-in User model by adding additional fields
+    such as 'profile_image' for the user's profile picture and 'about' for a
+    user's bio.
+
+    Attributes:
+        user (OneToOneField): A one-to-one relationship with the User model,
+                              linking each UserProfile to a specific user.
+        profile_image (CloudinaryField): A field for storing the user's profile image.
+                                         It uses Cloudinary for image storage and
+                                         has a default placeholder image.
+        about (TextField): A text field where users can provide information about themselves.
+                          It is optional and can be left blank.
+
+    Methods:
+        __str__: Returns the username of the associated user, used for display purposes.
+
+    """
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     profile_image = CloudinaryField('image', default='placeholder')
     about = models.TextField("About me", blank=True)

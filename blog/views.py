@@ -310,4 +310,18 @@ def profile_view(request):
     return render(request, 'blog/profile.html', {'user': request.user})
 
 def not_logged_in(request):
+    """
+    A view function for rendering a 'Not Logged In' page.
+
+    This view is responsible for rendering a template ('blog/not_logged_in.html')
+    that is displayed when a user who is not logged in tries to access a protected
+    area of the website.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: A response object containing the rendered template.
+
+    """
     return render(request, 'blog/not_logged_in.html')

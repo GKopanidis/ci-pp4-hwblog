@@ -57,11 +57,35 @@ class FavoriteForm(forms.ModelForm):
         fields = []
 
 class UserProfileForm(forms.ModelForm):
+    """
+    A form for editing user profiles.
+
+    This form is linked to the `UserProfile` model and allows editing of the
+    'profile_image' and 'about' fields in the user's profile.
+
+    Attributes:
+        model (class): The model associated with this form (UserProfile).
+        fields (list): A list of fields to be displayed in this form
+                       ('profile_image' and 'about' in this case).
+
+    """
     class Meta:
         model = UserProfile
         fields = ['profile_image', 'about']
 
 class UserForm(forms.ModelForm):
+    """
+    A form for editing user information.
+
+    This form is linked to the `User` model and allows editing of the 'username'
+    and 'email' fields in the user's profile.
+
+    Attributes:
+        model (class): The model associated with this form (User).
+        fields (list): A list of fields to be displayed in this form
+                       ('username' and 'email' in this case).
+
+    """
     class Meta:
         model = User
         fields = ['username', 'email']
