@@ -45,3 +45,14 @@ for (let button of deleteButtons) {
         deleteModal.show();
     });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.auth-required').forEach(function(element) {
+        element.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (!userIsAuthenticated) {
+                window.location.href = '/not_logged_in/';
+            }
+        });
+    });
+});

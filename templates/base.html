@@ -103,7 +103,7 @@
         {% if user.is_authenticated %}
             <p class="text-end m-3">You are logged in as <a href="{% url 'profile' %}">{{ user.username }}</a></p>
         {% else %}
-            <p class="text-end m-3">You are not logged in</p>
+            <p class="text-end m-3">You are not logged in. <a href="{% url 'account_login' %}">Log in here</a></p>
         {% endif %}
 
         {% block content %}
