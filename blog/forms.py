@@ -98,4 +98,9 @@ class PostForm(forms.ModelForm):
         fields = ['title', 'slug', 'author', 'featured_image', 'content', 'status', 'excerpt', 'categories']
         widgets = {
             'content': SummernoteWidget(),
+            'slug': forms.TextInput(attrs={'readonly': 'readonly'}),
+        }
+        help_texts = {
+            'slug': '(Read only)',
+            'categories': '(Multiple choices allowed)',
         }

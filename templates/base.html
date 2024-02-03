@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
-<body class="d-flex flex-column h-100 main-bg">
+<body data-user-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}" class="d-flex flex-column h-100 main-bg">
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
@@ -146,5 +146,5 @@
         </script>
     {% block extras %}
     {% endblock %}
-</body>
+</data-user-authenticated=>
 </html>
