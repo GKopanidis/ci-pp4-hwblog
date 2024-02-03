@@ -3,6 +3,14 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+
+{% if user.is_authenticated and user.is_staff or user.is_superuser %}
+    <a href="{% url 'post_edit' post.id %}" class="btn btn-secondary">Edit</a>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletePostModal">
+        Delete
+    </button>
+{% endif %}
+
 <div class="masthead">
     <div class="container">
         <div class="row g-0">
@@ -113,7 +121,7 @@
         </div>
     </div>
 </div>
-<!-- Delete confirmation modal -->
+<!-- Delete comment confirmation modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -127,6 +135,24 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <a id="deleteConfirm" href="#" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Delete post confirmation modal -->
+<div class="modal fade" id="deletePostModal" tabindex="-1" aria-labelledby="deletePostModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deletePostModalLabel">Delete Post?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this post? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger">Confirm Delete</a>
             </div>
         </div>
     </div>

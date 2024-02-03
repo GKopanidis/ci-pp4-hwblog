@@ -3,9 +3,10 @@ from django.urls import reverse
 from django.views import generic
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Post, Comment, Like, Category, Favorite, UserProfile
-from .forms import CommentForm, UserForm, UserProfileForm
+from .forms import CommentForm, UserForm, UserProfileForm, PostForm
+
 
 # Create your views here.
 
@@ -325,3 +326,41 @@ def not_logged_in(request):
 
     """
     return render(request, 'blog/not_logged_in.html')
+
+def can_edit(user):
+    return user.is_staff or user.is_superuser
+
+@login_required
+@user_passes_test(can_edit)
+def post_create(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Post saved successfully.')
+            return redirect('home')
+    else:
+        form = PostForm()
+    return render(request, 'blog/post_create.html', {'form': form})
+
+@login_required
+@user_passes_test(can_edit)
+def post_edit(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Post updated successfully.')
+            return redirect('post_detail', slug=post.slug)
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'blog/post_edit.html', {'form': form})
+
+@login_required
+@user_passes_test(can_edit)
+def post_delete(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.delete()
+    messages.success(request, 'Post deleted successfully.')
+    return redirect('home')
