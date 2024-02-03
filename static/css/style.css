@@ -2,7 +2,6 @@ body {
     background-color: #F9FAFC;
 }
 
-
 .brand {
     font-family: Roboto, sans-serif;
     font-size: 1.4rem;
@@ -269,3 +268,16 @@ body {
 .no-underline {
     text-decoration: none;
 }
+
+.post-create, .post-edit{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: left;
+  }
+  
+  .post-create h1, .post-edit h1 {
+    margin-bottom: 20px;
+  }
