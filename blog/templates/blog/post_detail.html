@@ -5,7 +5,7 @@
 {% block content %}
 
 {% if user.is_authenticated and user.is_staff or user.is_superuser %}
-    <a href="{% url 'post_edit' post.id %}" class="btn btn-secondary btn-edit">Edit</a>
+    <a href="{% url 'blog:post_edit' post.id %}" class="btn btn-secondary btn-edit">Edit</a>
     <button type="button" class="btn btn-danger btn-del" data-bs-toggle="modal" data-bs-target="#deletePostModal">
         Delete
     </button>
@@ -57,14 +57,14 @@
             </strong>
             {% if user.is_authenticated %}
                 {% if liked_by_user %}
-                    <a href="{% url 'unlike_post' post.id %}" title="Unlike this post"><i class="fas fa-heart"></i></a> {{ post.likes.all|length }}
+                    <a href="{% url 'blog:unlike_post' post.id %}" title="Unlike this post"><i class="fas fa-heart"></i></a> {{ post.likes.all|length }}
                 {% else %}
-                    <a href="{% url 'like_post' post.id %}" title="Like this post"><i class="far fa-heart"></i></a> {{ post.likes.all|length }}
+                    <a href="{% url 'blog:like_post' post.id %}" title="Like this post"><i class="far fa-heart"></i></a> {{ post.likes.all|length }}
                 {% endif %}
                 {% if favorited_by_user %}
-                    <a href="{% url 'unfavorite_post' post.id %}" title="Remove from favorites"><i class="fas fa-star"></i></a> {{ post.favorited_by.all|length }}
+                    <a href="{% url 'blog:unfavorite_post' post.id %}" title="Remove from favorites"><i class="fas fa-star"></i></a> {{ post.favorited_by.all|length }}
                 {% else %}
-                    <a href="{% url 'favorite_post' post.id %}" title="Add to favorites"><i class="far fa-star"></i></a> {{ post.favorited_by.all|length }}
+                    <a href="{% url 'blog:favorite_post' post.id %}" title="Add to favorites"><i class="far fa-star"></i></a> {{ post.favorited_by.all|length }}
                 {% endif %}
             {% else %}
                 <a href="#" class="auth-required" title="Like this post"><i class="far fa-heart"></i></a> {{ post.likes.all|length }}
@@ -152,7 +152,12 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger">Confirm Delete</a>
+                <!-- Ändere den Link zu einem Formular -->
+                <form action="{% url 'blog:post_delete' post.pk %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <!-- Verwende einen Button vom Typ submit, um das Formular zu senden -->
+                    <input type="submit" class="btn btn-danger" value="Confirm Delete">
+                </form>
             </div>
         </div>
     </div>

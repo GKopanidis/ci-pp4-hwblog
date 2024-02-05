@@ -4,7 +4,7 @@
 
 
 {% if user.is_authenticated and user.is_staff or user.is_superuser %}
-    <a href="{% url 'post_create' %}" class="btn btn-primary btn-create">Create</a>
+    <a href="{% url 'blog:post_create' %}" class="btn btn-primary btn-create">Create</a>
 {% endif %}
 
 <!-- Categories -->
@@ -17,11 +17,11 @@
             <div class="categories-bar">
                 <ul class="nav justify-content-center">
                     <li class="nav-item">
-                        <a class="nav-link {% if not current_category %}active-category{% endif %}" href="{% url 'home' %}">All</a>
+                        <a class="nav-link {% if not current_category %}active-category{% endif %}" href="{% url 'blog:home' %}">All</a>
                     </li>
                     {% for category in categories %}
                         <li class="nav-item">
-                            <a class="nav-link {% if current_category == category.name %}active-category{% endif %}" href="{% url 'post_list_by_category' category.name %}">{{ category.name }}</a>
+                            <a class="nav-link {% if current_category == category.name %}active-category{% endif %}" href="{% url 'blog:post_list_by_category' category.name %}">{{ category.name }}</a>
                         </li>
                     {% endfor %}
                 </ul>
@@ -47,7 +47,7 @@
                         <div class="card-body">
                             <!-- Image Container -->
                             <div class="image-container">
-                                <a href="{% url 'post_detail' post.slug %}">
+                                <a href="{% url 'blog:post_detail' post.slug %}">
                                     {% if "placeholder" in post.featured_image.url %}
                                         <img class="card-img-top" src="{% static 'images/default.webp' %}" alt="placeholder image">
                                     {% else %}
@@ -65,7 +65,7 @@
                                 </div>
                             </div>
                             <!-- Post Link -->
-                            <a href="{% url 'post_detail' post.slug %}" class="post-link">
+                            <a href="{% url 'blog:post_detail' post.slug %}" class="post-link">
                                 <h2 class="card-title">{{ post.title }}</h2>
                                 <p class="card-text">{{ post.excerpt }}</p>
                             </a>

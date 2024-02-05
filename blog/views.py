@@ -1,30 +1,27 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect
+from django.views.generic import DeleteView
 from .models import Post, Comment, Like, Category, Favorite, UserProfile
 from .forms import CommentForm, UserForm, UserProfileForm, PostForm
 
-
-# Create your views here.
-
+class UserPermissionMixin:
+    """
+    A mixin to check for specific user permissions.
+    """
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff and not request.user.is_superuser:
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
 
 class PostList(generic.ListView):
     """
-    Returns all published posts in :model:`blog.Post`
-    and displays them in a page of six posts. 
-    **Context**
-
-    ``queryset``
-        All published instances of :model:`blog.Post`
-    ``paginate_by``
-        Number of posts per page.
-        
-    **Template:**
-
-    :template:`blog/index.html`
+    Display a list of all published posts.
     """
     queryset = Post.objects.filter(status=1)
     template_name = "blog/index.html"
@@ -35,261 +32,156 @@ class PostList(generic.ListView):
         context['categories'] = Category.objects.all()
         return context
 
-
 def post_detail(request, slug):
     """
-    Display an individual :model:`blog.Post`.
-
-    **Context**
-
-    ``post``
-        An instance of :model:`blog.Post`.
-    ``comments``
-        All approved comments related to the post.
-    ``comment_count``
-        A count of approved comments related to the post.
-    ``comment_form``
-        An instance of :form:`blog.CommentForm`
-    ``liked_by_user``
-        Boolean indicating whether the user has liked the post.
-    ``favorited_by_user``
-        Boolean indicating whether the user has favorited the post.
-
-    **Template:**
-
-    :template:`blog/post_detail.html`
+    Display a detailed view of a single post, including its comments and like status.
     """
-    queryset = Post.objects.filter(status=1)
-    post = get_object_or_404(queryset, slug=slug)
-    comments = post.comments.all().order_by("-created_on")
-    comment_count = post.comments.filter(approved=True).count()
-    # Set liked_by_user and favorited_by_user to False if the user is not authenticated
-    liked_by_user = False
-    favorited_by_user = False
-    if request.user.is_authenticated:
-        liked_by_user = post.likes.filter(user=request.user).exists()
-        favorited_by_user = post.favorited_by.filter(user=request.user).exists()
+    post = get_object_or_404(Post, slug=slug, status=1)
+    comments = post.comments.filter(approved=True).order_by("-created_on")
+    comment_count = comments.count()
+    liked_by_user = post.likes.filter(user=request.user).exists() if request.user.is_authenticated else False
+    favorited_by_user = post.favorited_by.filter(user=request.user).exists() if request.user.is_authenticated else False
+
     if request.method == "POST":
-        comment_form = CommentForm(data=request.POST)
+        comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
-            comment.author = request.user
             comment.post = post
+            comment.author = request.user
             comment.save()
-            messages.add_message(
-                request, messages.SUCCESS,
-                'Comment submitted and awaiting approval'
-            )
+            messages.success(request, "Your comment has been posted and is awaiting approval.")
+            return redirect('blog:post_detail', slug=slug)
+    else:
+        comment_form = CommentForm()
 
-    comment_form = CommentForm()
+    return render(request, "blog/post_detail.html", {
+        "post": post,
+        "comments": comments,
+        "comment_count": comment_count,
+        "comment_form": comment_form,
+        "liked_by_user": liked_by_user,
+        "favorited_by_user": favorited_by_user,
+    })
 
-    return render(
-        request,
-        "blog/post_detail.html",
-        {
-            "post": post,
-            "comments": comments,
-            "comment_count": comment_count,
-            "comment_form": comment_form,
-            "liked_by_user": liked_by_user,
-            "favorited_by_user": favorited_by_user,
-        },
-    )
-
-
+@login_required
 def comment_edit(request, slug, comment_id):
     """
-    Display an individual comment for edit.
-
-    **Context**
-
-    ``post``
-        An instance of :model:`blog.Post`.
-    ``comment``
-        A single comment related to the post.
-    ``comment_form``
-        An instance of :form:`blog.CommentForm`
+    Allow a user to edit their own comment.
     """
+    comment = get_object_or_404(Comment, id=comment_id, post__slug=slug)
     if request.method == "POST":
-        queryset = Post.objects.filter(status=1)
-        post = get_object_or_404(queryset, slug=slug)
-        comment = get_object_or_404(Comment, pk=comment_id)
-        comment_form = CommentForm(data=request.POST, instance=comment)
-
-        if comment_form.is_valid() and comment.author == request.user:
-            comment = comment_form.save(commit=False)
-            comment.post = post
-            comment.approved = False
-            comment.save()
-            messages.add_message(request, messages.SUCCESS, 'Comment Updated!')
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid() and request.user == comment.author:
+            form.save()
+            messages.success(request, "Your comment has been updated.")
+            return redirect('blog:post_detail', slug=slug)
         else:
-            messages.add_message(request, messages.ERROR,
-                                 'Error updating comment!')
+            messages.error(request, "You do not have permission to edit this comment.")
+    else:
+        form = CommentForm(instance=comment)
+    return render(request, 'blog/comment_edit.html', {'form': form, 'comment': comment})
 
-    return HttpResponseRedirect(reverse('post_detail', args=[slug]))
-
-
+@login_required
 def comment_delete(request, slug, comment_id):
     """
-    Delete an individual comment.
-
-    **Context**
-
-    ``post``
-        An instance of :model:`blog.Post`.
-    ``comment``
-        A single comment related to the post.
+    Allow a user to delete their own comment.
     """
-    queryset = Post.objects.filter(status=1)
-    post = get_object_or_404(queryset, slug=slug)
-    comment = get_object_or_404(Comment, pk=comment_id)
-
-    if comment.author == request.user:
+    comment = get_object_or_404(Comment, id=comment_id, post__slug=slug)
+    if request.user == comment.author:
         comment.delete()
-        messages.add_message(request, messages.SUCCESS, 'Comment deleted!')
+        messages.success(request, "Your comment has been deleted.")
     else:
-        messages.add_message(request, messages.ERROR,
-                             'You can only delete your own comments!')
+        messages.error(request, "You do not have permission to delete this comment.")
+    return redirect('blog:post_detail', slug=slug)
 
-    return HttpResponseRedirect(reverse('post_detail', args=[slug]))
-
+@login_required
 def like_post(request, post_id):
     """
-    This function handles the 'liking' of a post by a user.
-
-    Args:
-        request: The HTTP request object.
-        post_id: The unique identification of the post to be liked.
-
-    Returns:
-        A redirection to the detail view of the liked post.
+    Toggle a user's like on a post.
     """
     post = get_object_or_404(Post, id=post_id)
     like, created = Like.objects.get_or_create(user=request.user, post=post)
-
     if not created:
         like.delete()
+        messages.success(request, "You have unliked the post.")
+    else:
+        messages.success(request, "You have liked the post.")
+    return redirect('blog:post_detail', slug=post.slug)
 
-    messages.success(request, 'Post liked successfully!')
-    return redirect('post_detail', slug=post.slug)
-
+@login_required
 def unlike_post(request, post_id):
     """
-    This function handles the 'unliking' of a post by a user.
-
-    Args:
-        request: The HTTP request object.
-        post_id: The unique identification of the post to be unliked.
-
-    Returns:
-        A redirection to the detail view of the unliked post.
+    Allow a user to unlike a post.
     """
     post = get_object_or_404(Post, id=post_id)
-    like = Like.objects.filter(user=request.user, post=post).first()
-
-    if like:
-        like.delete()
-
-    messages.success(request, 'Post unliked successfully!')
-    return redirect('post_detail', slug=post.slug)
+    Like.objects.filter(user=request.user, post=post).delete()
+    messages.success(request, "You have unliked the post.")
+    return redirect('blog:post_detail', slug=post.slug)
 
 def post_list_by_category(request, category):
     """
-    This function displays a list of posts based on a specific category.
-
-    Args:
-        request: The HTTP request object.
-        category: The name of the category by which the posts should be filtered.
-
-    Returns:
-        An HTML page displaying a list of posts from the specified category.
+    Display a list of posts filtered by a specific category.
     """
-    posts = Post.objects.filter(categories__name=category)
+    posts = Post.objects.filter(categories__name=category, status=1)
     categories = Category.objects.all()
-    context = {
+    return render(request, 'blog/index.html', {
         'post_list': posts,
         'categories': categories,
-        'category_name': category,
-        'current_category': category,
-    }
-    return render(request, 'blog/index.html', context)
+        'category_name': category
+    })
 
-
+@login_required
 def favorite_post(request, post_id):
     """
-    This function allows a user to add or remove a post from their favorites.
-
-    Args:
-        request: The HTTP request object.
-        post_id: The unique identification of the post to be added or removed from favorites.
-
-    Returns:
-        A redirection to the detail view of the respective post.
+    Allow a user to favorite or unfavorite a post.
     """
     post = get_object_or_404(Post, id=post_id)
     favorite, created = Favorite.objects.get_or_create(user=request.user, post=post)
-
     if created:
-        messages.success(request, 'Added to favorites!')
+        messages.success(request, "Post added to favorites.")
     else:
         favorite.delete()
-        messages.success(request, 'Removed from favorites!')
+        messages.success(request, "Post removed from favorites.")
+    return redirect('blog:post_detail', slug=post.slug)
 
-    return redirect('post_detail', slug=post.slug)
-
-
+@login_required
 def unfavorite_post(request, post_id):
     """
-    This function allows a user to remove a post from their favorites.
-
-    Args:
-        request: The HTTP request object.
-        post_id: The unique identification of the post to be removed from favorites.
-
-    Returns:
-        A redirection to the detail view of the respective post.
+    Allow a user to remove a post from their favorites.
     """
     post = get_object_or_404(Post, id=post_id)
-    favorite = Favorite.objects.filter(user=request.user, post=post).first()
-
-    if favorite:
+    try:
+        favorite = Favorite.objects.get(user=request.user, post=post)
         favorite.delete()
-        messages.success(request, 'Removed from favorites!')
-    else:
-        messages.success(request, 'Not in favorites!')
-
-    return redirect('post_detail', slug=post.slug)
-
+        messages.success(request, "Post removed from favorites.")
+    except Favorite.DoesNotExist:
+        messages.warning(request, "Post is not in your favorites.")
+    return redirect('blog:post_detail', slug=post.slug)
 
 @login_required
 def favorite_list(request):
     """
-    This function displays a list of posts marked as favorites by a user.
-
-    Args:
-        request: The HTTP request object.
-
-    Returns:
-        An HTML page displaying a list of posts marked as favorites.
+    Display a list of the user's favorite posts.
     """
     favorites = Favorite.objects.filter(user=request.user)
     return render(request, 'blog/favorite_list.html', {'favorites': favorites})
 
 @login_required
 def edit_profile(request):
+    """
+    Allow a user to edit their profile information.
+    """
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = UserProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
-
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            messages.success(request, 'Profile updated.')
-            return redirect('profile') 
+            messages.success(request, 'Your profile has been updated.')
+            return redirect('blog:profile')
     else:
         user_form = UserForm(instance=request.user)
         profile_form = UserProfileForm(instance=request.user.userprofile)
-
     return render(request, 'blog/edit_profile.html', {
         'user_form': user_form,
         'profile_form': profile_form
@@ -298,69 +190,61 @@ def edit_profile(request):
 @login_required
 def profile_view(request):
     """
-    This view displays the user's profile.
-
-    Args:
-        request: The HTTP request object.
-
-    Returns:
-        An HTML page displaying the user's profile.
+    Display the user's profile.
     """
-    UserProfile.objects.get_or_create(user=request.user)
-
     return render(request, 'blog/profile.html', {'user': request.user})
 
 def not_logged_in(request):
     """
-    A view function for rendering a 'Not Logged In' page.
-
-    This view is responsible for rendering a template ('blog/not_logged_in.html')
-    that is displayed when a user who is not logged in tries to access a protected
-    area of the website.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: A response object containing the rendered template.
-
+    Display a message to users who are not logged in but are trying to access areas that require authentication.
     """
     return render(request, 'blog/not_logged_in.html')
 
-def can_edit(user):
-    return user.is_staff or user.is_superuser
+class PostCreate(LoginRequiredMixin, UserPermissionMixin, generic.CreateView):
+    """
+    Create a new blog post. Requires user to be logged in and have permission.
+    """
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/post_create.html'
+    success_url = reverse_lazy('blog:home')
 
-@login_required
-@user_passes_test(can_edit)
-def post_create(request):
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Post saved successfully.')
-            return redirect('home')
-    else:
-        form = PostForm()
-    return render(request, 'blog/post_create.html', {'form': form})
+    def form_valid(self, form):
+        messages.success(self.request, "Post created successfully.")
+        return super().form_valid(form)
 
-@login_required
-@user_passes_test(can_edit)
-def post_edit(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES, instance=post)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Post updated successfully.')
-            return redirect('post_detail', slug=post.slug)
-    else:
-        form = PostForm(instance=post)
-    return render(request, 'blog/post_edit.html', {'form': form})
+class PostEdit(LoginRequiredMixin, UserPermissionMixin, generic.UpdateView):
+    """
+    Edit an existing blog post. Requires user to be logged in and have permission.
+    """
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/post_edit.html'
 
-@login_required
-@user_passes_test(can_edit)
-def post_delete(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    post.delete()
-    messages.success(request, 'Post deleted successfully.')
-    return redirect('home')
+    def get_success_url(self):
+        return reverse_lazy('blog:post_detail', kwargs={'slug': self.object.slug})
+
+    def form_valid(self, form):
+        messages.success(self.request, "Post updated successfully.")
+        return super().form_valid(form)
+
+class PostDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """
+    Delete an existing blog post. Requires user to be logged in and have permission.
+    """
+    model = Post
+    success_url = reverse_lazy('blog:home')
+
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user.is_superuser or post.author == self.request.user
+
+    def delete(self, request, *args, **kwargs):
+        post = self.get_object()
+        if not self.test_func():
+            messages.error(request, "You do not have permission to delete this post.")
+            return HttpResponseRedirect(reverse('blog:home'))
+        
+        result = super().delete(request, *args, **kwargs)
+        messages.success(request, "Post deleted successfully.")
+        return result

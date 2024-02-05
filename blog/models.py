@@ -53,9 +53,8 @@ class Post(models.Model):
         get_favorite_count(): Gets the count of users who have marked this post as a favorite.
     """
     title = models.CharField(max_length=200, unique=True)
-    slug = models.SlugField(max_length=200, unique=True)
-    author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="blog_posts")
+    slug = models.SlugField(max_length=200, unique=True, blank=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="blog_posts")
     featured_image = CloudinaryField('image', default='placeholder')
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
@@ -64,15 +63,21 @@ class Post(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField(Category, related_name='posts')
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
-        super().save(*args, **kwargs)
-
     class Meta:
         ordering = ["-created_on"]
 
     def __str__(self):
         return f"{self.title} | written by {self.author}"
+
+    def save(self, *args, **kwargs):
+        if not self.slug or not self.id or self.slug != slugify(self.title):
+            # Wenn der Slug leer ist, der Beitrag neu ist oder der Titel geändert wurde
+            self.slug = original = slugify(self.title)
+            for x in range(1, 100):
+                if not Post.objects.filter(slug=self.slug).exclude(id=self.id).exists():
+                    break
+                self.slug = f"{original}-{x}"
+        super().save(*args, **kwargs)
 
     @property
     def likes(self):

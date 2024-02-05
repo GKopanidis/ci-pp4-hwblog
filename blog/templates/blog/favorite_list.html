@@ -10,7 +10,7 @@
                 <ul class="list-unstyled">
                     {% for favorite in favorites %}
                         <li class="fav-list">
-                            <a href="{% url 'post_detail' slug=favorite.post.slug %}" class="text-decoration-none">
+                            <a href="{% url 'blog:post_detail' slug=favorite.post.slug %}" class="text-decoration-none">
                                 <h3>{{ favorite.post.title }}</h3>
                                 <img src="{{ favorite.post.featured_image.url }}" alt="{{ favorite.post.title }}" class="img-hover-zoom" style="max-width: 300px; height: auto;">
                             </a>
