@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="post-delete-success">
+  <h1>Post Deleted</h1>
+  <p>The post was deleted successfully.</p>
+  <a href="{% url 'blog:home' %}" class="btn btn-primary">Back to Home</a>
+</div>
+
+{% endblock %}

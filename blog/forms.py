@@ -95,10 +95,9 @@ class UserForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'slug', 'author', 'featured_image', 'content', 'status', 'excerpt', 'categories']
+        fields = ['title', 'featured_image', 'content', 'status', 'excerpt', 'categories']
         widgets = {
             'content': SummernoteWidget(),
-            'slug': forms.TextInput(attrs={'readonly': 'readonly'}),
         }
         help_texts = {
             'slug': '(Read only)',

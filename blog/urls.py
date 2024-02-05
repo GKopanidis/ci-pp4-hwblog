@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import PostDeleteConfirm, PostDelete, PostDeleteSuccess
 
 urlpatterns = [
     path('', views.PostList.as_view(), name='home'),
@@ -9,7 +10,9 @@ urlpatterns = [
     path('not_logged_in/', views.not_logged_in, name='not_logged_in'),
     path('post/create/', views.PostCreate.as_view(), name='post_create'),
     path('post/<int:pk>/edit/', views.PostEdit.as_view(), name='post_edit'),
-    path('post/<int:pk>/delete/', views.PostDelete.as_view(), name='post_delete'),
+    path('post/<int:pk>/delete/', PostDeleteConfirm.as_view(), name='post_delete_confirm'),
+    path('post/<int:pk>/delete/confirm', PostDelete.as_view(), name='post_delete'),
+    path('post/delete/success', PostDeleteSuccess.as_view(), name='post_delete_success'),
     path('<slug:slug>/', views.post_detail, name='post_detail'),
     path('<slug:slug>/edit_comment/<int:comment_id>', views.comment_edit, name='comment_edit'),
     path('<slug:slug>/delete_comment/<int:comment_id>', views.comment_delete, name='comment_delete'),

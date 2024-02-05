@@ -1,23 +1,20 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseRedirect
-from django.views.generic import DeleteView
-from .models import Post, Comment, Like, Category, Favorite, UserProfile
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.views.generic import DeleteView, DetailView, TemplateView
+from .models import Post, Comment, Like, Category, Favorite
 from .forms import CommentForm, UserForm, UserProfileForm, PostForm
 
 class UserPermissionMixin:
     """
     A mixin to check for specific user permissions.
     """
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_staff and not request.user.is_superuser:
-            raise PermissionDenied
-        return super().dispatch(request, *args, **kwargs)
+    def has_permission(self, request, *args, **kwargs):
+        obj = self.get_object()
+        return obj.author == request.user or request.user.is_superuser
 
 class PostList(generic.ListView):
     """
@@ -210,8 +207,10 @@ class PostCreate(LoginRequiredMixin, UserPermissionMixin, generic.CreateView):
     success_url = reverse_lazy('blog:home')
 
     def form_valid(self, form):
+        form.instance.author = self.request.user
+        response = super().form_valid(form)
         messages.success(self.request, "Post created successfully.")
-        return super().form_valid(form)
+        return response
 
 class PostEdit(LoginRequiredMixin, UserPermissionMixin, generic.UpdateView):
     """
@@ -228,23 +227,20 @@ class PostEdit(LoginRequiredMixin, UserPermissionMixin, generic.UpdateView):
         messages.success(self.request, "Post updated successfully.")
         return super().form_valid(form)
 
-class PostDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class PostDeleteConfirm(DetailView):
+    model = Post
+    template_name = 'blog/post_delete_confirm.html'
+
+class PostDelete(LoginRequiredMixin, UserPermissionMixin, DeleteView):
     """
     Delete an existing blog post. Requires user to be logged in and have permission.
     """
     model = Post
-    success_url = reverse_lazy('blog:home')
-
-    def test_func(self):
-        post = self.get_object()
-        return self.request.user.is_superuser or post.author == self.request.user
+    success_url = reverse_lazy('blog:post_delete_success')
 
     def delete(self, request, *args, **kwargs):
-        post = self.get_object()
-        if not self.test_func():
-            messages.error(request, "You do not have permission to delete this post.")
-            return HttpResponseRedirect(reverse('blog:home'))
-        
-        result = super().delete(request, *args, **kwargs)
-        messages.success(request, "Post deleted successfully.")
-        return result
+        messages.success(request, 'Post deleted successfully')
+        return super().delete(request, *args, **kwargs)
+
+class PostDeleteSuccess(TemplateView):
+    template_name = 'blog/post_delete_success.html'

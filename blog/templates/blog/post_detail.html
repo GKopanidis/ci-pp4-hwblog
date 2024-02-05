@@ -6,9 +6,7 @@
 
 {% if user.is_authenticated and user.is_staff or user.is_superuser %}
     <a href="{% url 'blog:post_edit' post.id %}" class="btn btn-secondary btn-edit">Edit</a>
-    <button type="button" class="btn btn-danger btn-del" data-bs-toggle="modal" data-bs-target="#deletePostModal">
-        Delete
-    </button>
+    <a href="{% url 'blog:post_delete_confirm' post.id %}" class="btn btn-danger btn-del">Delete</a>
 {% endif %}
 
 <div class="masthead">
