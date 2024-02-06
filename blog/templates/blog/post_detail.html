@@ -65,8 +65,8 @@
                     <a href="{% url 'blog:favorite_post' post.id %}" title="Add to favorites"><i class="far fa-star"></i></a> {{ post.favorited_by.all|length }}
                 {% endif %}
             {% else %}
-                <a href="#" class="auth-required" title="Like this post"><i class="far fa-heart"></i></a> {{ post.likes.all|length }}
-                <a href="#" class="auth-required" title="Add to favorites"><i class="far fa-star"></i></a> {{ post.favorited_by.all|length }}
+                <a href="{% url 'account_login' %}" class="auth-required" title="Like this post"><i class="far fa-heart"></i></a> {{ post.likes.all|length }}
+                <a href="{% url 'account_login' %}" class="auth-required" title="Add to favorites"><i class="far fa-star"></i></a> {{ post.favorited_by.all|length }}
             {% endif %}
         </div>
         <div class="col-12">

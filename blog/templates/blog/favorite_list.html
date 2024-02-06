@@ -12,7 +12,11 @@
                         <li class="fav-list">
                             <a href="{% url 'blog:post_detail' slug=favorite.post.slug %}" class="text-decoration-none">
                                 <h3>{{ favorite.post.title }}</h3>
-                                <img src="{{ favorite.post.featured_image.url }}" alt="{{ favorite.post.title }}" class="img-hover-zoom" style="max-width: 300px; height: auto;">
+                                {% if "placeholder" in favorite.post.featured_image.url %}
+                                    <img class="img-hover-zoom" src="{% static 'images/default.webp' %}" alt="placeholder image">
+                                {% else %}
+                                    <img class="img-hover-zoom" src="{{ favorite.post.featured_image.url }}" alt="{{ favorite.post.title }}">
+                                {% endif %}
                             </a>
                             <hr>
                         </li>
