@@ -16,6 +16,30 @@ Gaming Galaxy: Join us for game reviews, previews, and everything in between for
 
 [HW|Blog live site](https://ci-pp4-hwblog-402679d73bbc.herokuapp.com/)
 
+## Agile Planning and Development Process
+The development of HW|Blog followed an Agile methodology, utilizing a Kanban board hosted on GitHub to manage tasks and workflows. This approach made it easier to focus on immediate tasks while also keeping an eye on the broader project goals and progress.
+
+### Kanban Board
+
+[Link to the board](https://github.com/users/GKopanidis/projects/5)
+
+The board was divided into three primary columns:
+
+- **Todo:** Tasks that are planned but not yet in progress.
+- **In Progress:** Tasks currently being worked on.
+- **Done:** Tasks that have been completed.
+
+Each task was created as an issue and then categorized into Epics and User Stories for better organization and focus.
+
+### Epics and User Stories
+
+Prior to starting development, Epics and User Stories were created to define the scope and goals of the project. This made it easier to break down the project into smaller, manageable chunks and helped in tracking progress effectively.
+
+- **Epics**: Large areas of work that contain multiple tasks.
+- **User Stories**: Smaller tasks that contribute to the completion of an Epic.
+
+This Agile planning setup contributed significantly to the efficient and focused development of Loop
+
 ### Site Goals
 
 As a User:
@@ -102,11 +126,16 @@ As a Site Owner:
 
     <img src="docs/readme_images/create_about_page.png" width="75%" height="75%">
 
-- **Review and Approve Comments:** Implement a system for reviewing and approving user comments to maintain a positive community environment.
+- **Review and Approve Comments:** Implement a system for reviewing and approving user comments to maintain a positive community environment. You can also approve comments as an superuser or staff member inside the post.
+
+  Admin panel:
 
     <img src="docs/readme_images/rev_and_appr_comment_1.png" width="75%" height="75%">
-
     <img src="docs/readme_images/rev_and_appr_comment_2.png" width="75%" height="75%">
+
+  Frontend:
+
+    <img src="docs/readme_images/rev_and_appr_comment_3.png" width="75%" height="75%">
 
 - **Create Drafts:** Allow the creation of content drafts for future publication.
 
@@ -127,9 +156,11 @@ As a Site Owner:
 
 ### Features Planned
 
-- Users can post content themselves, which will be displayed after approval
-- Social Media Login
-- Newsletter
+- **User-Generated Content:** Enable users to create and submit their own content, which will be published upon approval by administrators.
+
+- **Social Media Login:** Implement functionality for users to authenticate and login using their social media accounts, enhancing convenience and accessibility.
+
+- **Newsletter Integration:** Integrate a newsletter feature to allow users to subscribe and receive regular updates, fostering engagement and communication.
 
 ## Design
 
@@ -138,7 +169,7 @@ As a Site Owner:
 ### ERD
 - Entity relationship diagram was created using [DBVisualizer](https://www.dbvis.com/) and shows the schemas for each of the models and how they are related.
 
-    <img src="docs/readme_images/ERD.jpg" width="75%" height="75%">
+    <img src="docs/readme_images/ERD.png" width="75%" height="75%">
 
 ## Technolgies
 
@@ -231,6 +262,21 @@ The app should now be deployed.
 
 The live link can be found here: [Live Site](https://ci-pp4-hwblog-402679d73bbc.herokuapp.com/)
 
+
+### Creating a Database
+
+- Log into ElephantSQL.com and access your dashboard.
+- Click "Create New Instance".
+- Set up a plan, name it, and select the closest data center.
+- Click "Review" and "Create instance".
+- Return to the ElephantSQL dashboard and copy the database URL.
+
+
+### The env.py File
+- Create an env.py file and ensure it's in .gitignore.
+- Add DATABASE_URL and SECRET_KEY to env.py.
+- If using Cloudinary, add CLOUDINARY_URL to env.py.
+
 ### Run Locally
 
 Navigate to the GitHub Repository you want to clone to use locally:
@@ -256,7 +302,25 @@ Most commonly, forks are used to either propose changes to someone else's projec
 ## Credits
 
 [Django Blog](https://github.com/GKopanidis/ci-pp4-wt-django-blog "Django Blog")
-   - Django Blog was used as part of the education process and was referred back to for the deployment of the project
+  - A valuable resource utilized in the educational journey, serving as a reference point for project deployment.
+
+[Mastering Mixins in Django](https://medium.com/@bobbykboseoffice/mastering-mixins-in-django-acda05b34dd6#:~:text=In%20Django%2C%20mixins%20are%20used,other%20classes%20by%20using%20inheritance. "Mastering Mixins in Django")
+  - Explains the effective utilization of mixins in Django, enhancing code modularity and reusability through inheritance.
+
+[Stack Overflow](https://stackoverflow.com/)
+  - A vital knowledge repository pivotal in the development and troubleshooting phases of the project.
+
+[Django Project Docs DB Model](https://docs.djangoproject.com/en/4.2/topics/db/models/) \
+  - Provides comprehensive guidance on constructing database models in Django, facilitating efficient data management.
+
+[Django AllAuth Docs](https://django-allauth.readthedocs.io/en/latest/) \
+  - Offers detailed insights into the functionality of Django AllAuth, a versatile authentication solution for Django projects.
+
+[Bootstrap Documentation](https://getbootstrap.com/docs/5.3/getting-started/introduction/) \
+  - An indispensable resource for simplifying front-end development with Bootstrap's extensive documentation and component library.
+
+[Gareth McGirr](https://github.com/Gareth-McGirr) \
+  - Acknowledged for providing invaluable guidance throughout the project's development process.
 
 ## Media
 
