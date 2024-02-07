@@ -285,7 +285,8 @@ body {
 
 .btn-create,
 .btn-edit,
-.btn-del {
+.btn-del,
+.btn-success {
     margin-left: 10px;
 }
 

@@ -6,31 +6,31 @@ from .models import Comment, Category, Post, Favorite, UserProfile
 
 class CommentForm(forms.ModelForm):
     """
-    Form class for users to comment on a post 
+    A form for submitting comments on a blog post by users.
+
+    This ModelForm is linked to the `Comment` model. It allows users to enter a comment body,
+    facilitating user engagement with blog content.
+
+    Meta:
+        model (Model): Specifies the Django model (`Comment`) associated with this form.
+        fields (tuple): Defines the single field ('body') included in the form.
     """
     class Meta:
-        """
-        Specify the django model and order of the fields
-        """
         model = Comment
         fields = ('body',)
 
 class BlogPostForm(forms.ModelForm):
     """
-    This form is used for creating or editing a blog post.
-
-    Fields:
-        - title (CharField): The title of the blog post.
-        - content (TextField): The main content of the blog post.
-        - categories (ModelMultipleChoiceField): A multiple-choice field for selecting post categories.
+    A form for creating or editing blog posts, including title, content, and category selection.
 
     Attributes:
-        categories (ModelMultipleChoiceField): A field that allows users to select multiple categories for the blog post.
+        categories (ModelMultipleChoiceField): Enables selection of multiple categories for a blog post,
+        presented as checkbox options derived from the Category model.
 
     Meta:
-        model (Post): Specifies the model associated with this form.
-        fields (list): Specifies the fields from the model to include in the form.
-
+        model (Post): Links this form to the `Post` model.
+        fields (list): Lists the fields included in the form, integrating a custom 'categories' field
+        alongside 'title' and 'content'.
     """
     categories = forms.ModelMultipleChoiceField(
         queryset=Category.objects.all(),
@@ -43,15 +43,14 @@ class BlogPostForm(forms.ModelForm):
 
 class FavoriteForm(forms.ModelForm):
     """
-    This form is used for marking a post as a favorite.
+    A form for marking a blog post as a favorite, designed for internal mechanics without direct user input.
 
-    Fields:
-        This form has no visible fields, as it's used to mark a post as a favorite without additional user input.
+    This ModelForm is associated with the `Favorite` model, primarily used to create or delete favorite
+    instances through view logic rather than form inputs.
 
     Meta:
-        model (Favorite): Specifies the model associated with this form.
-        fields (list): Specifies the fields from the model to include in the form, which is an empty list as it doesn't require user input.
-
+        model (Favorite): Specifies the model linked with this form.
+        fields (list): An empty list, indicating no fields are required from the user for this operation.
     """
     class Meta:
         model = Favorite
@@ -59,16 +58,11 @@ class FavoriteForm(forms.ModelForm):
 
 class UserProfileForm(forms.ModelForm):
     """
-    A form for editing user profiles.
+    A form for users to edit their profile details, specifically the profile image and a personal bio.
 
-    This form is linked to the `UserProfile` model and allows editing of the
-    'profile_image' and 'about' fields in the user's profile.
-
-    Attributes:
-        model (class): The model associated with this form (UserProfile).
-        fields (list): A list of fields to be displayed in this form
-                       ('profile_image' and 'about' in this case).
-
+    Meta:
+        model (UserProfile): The model associated with this form, pointing to user profile information.
+        fields (list): Specifies which fields ('profile_image', 'about') are editable through this form.
     """
     class Meta:
         model = UserProfile
@@ -76,16 +70,11 @@ class UserProfileForm(forms.ModelForm):
 
 class UserForm(forms.ModelForm):
     """
-    A form for editing user information.
+    A form for editing basic user information, including the username and email address.
 
-    This form is linked to the `User` model and allows editing of the 'username'
-    and 'email' fields in the user's profile.
-
-    Attributes:
-        model (class): The model associated with this form (User).
-        fields (list): A list of fields to be displayed in this form
-                       ('username' and 'email' in this case).
-
+    Meta:
+        model (User): The Django default User model linked to this form.
+        fields (list): Lists 'username' and 'email' as the fields available for editing by the user.
     """
     class Meta:
         model = User
@@ -93,6 +82,18 @@ class UserForm(forms.ModelForm):
 
 
 class PostForm(forms.ModelForm):
+    """
+    Form for creating and editing blog posts, offering fields for the title, featured image, content,
+    status, excerpt, and category selection, with a rich text editor for the content.
+
+    Meta:
+        model (Post): Specifies the `Post` model this form is associated with.
+        fields (list): Includes the post attributes to be edited or created via the form.
+        widgets (dict): Customizes the rendering of the 'content' field using `SummernoteWidget`
+        for rich text editing.
+        help_texts (dict): Provides additional guidance for the 'categories' field, instructing users
+        on multiple selection.
+    """
     class Meta:
         model = Post
         fields = ['title', 'featured_image', 'content', 'status', 'excerpt', 'categories']
@@ -100,6 +101,5 @@ class PostForm(forms.ModelForm):
             'content': SummernoteWidget(),
         }
         help_texts = {
-            'slug': '(Read only)',
-            'categories': '(Multiple choices allowed)',
+            'categories': '(Multiple choices allowed. Hold down "Control", or "Command" on a Mac, to select more than one.)',
         }

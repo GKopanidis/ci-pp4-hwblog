@@ -71,7 +71,6 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug or not self.id or self.slug != slugify(self.title):
-            # Wenn der Slug leer ist, der Beitrag neu ist oder der Titel geändert wurde
             self.slug = original = slugify(self.title)
             for x in range(1, 100):
                 if not Post.objects.filter(slug=self.slug).exclude(id=self.id).exists():
