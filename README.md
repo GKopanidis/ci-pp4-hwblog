@@ -1,8 +1,8 @@
 # [HW|Blog](https://ci-pp4-hwblog-402679d73bbc.herokuapp.com/)
 
-Welcome to HWBlog - Your Hub for Tech Enthusiasts
+Welcome to HW|Blog - Your Hub for Tech Enthusiasts
 
-Dive into the HWBlog, a dedicated space for all things hardware, coding, 3D printing, Windows, and gaming. Our blog is the go-to destination for enthusiasts and professionals alike, seeking insights, tips, and discussions on the latest in technology.
+Dive into the HWB|log, a dedicated space for all things hardware, coding, 3D printing, Windows, and gaming. Our blog is the go-to destination for enthusiasts and professionals alike, seeking insights, tips, and discussions on the latest in technology.
 
 **Explore Our Content:**
 
@@ -92,9 +92,11 @@ As a Site Owner:
 
 - **Profile Customization:** Once logged in, users can view and customize their profile, including uploading a picture, changing their username, email, and adding an "About Me" text.
 
-    <img src="docs/readme_images/show_profile.png" width="75%" height="75%">
+  <img src="docs/readme_images/show_profile.png" width="75%" height="75%">
 
-    <img src="docs/readme_images/edit_profile.png" width="75%" height="75%">
+Edit view:
+
+  <img src="docs/readme_images/edit_profile.png" width="75%" height="75%">
 
 - **Category Viewing and Filtering:** Users can view categories and filter posts by category or view all posts collectively.
 
@@ -161,6 +163,10 @@ As a Site Owner:
 - **Social Media Login:** Implement functionality for users to authenticate and login using their social media accounts, enhancing convenience and accessibility.
 
 - **Newsletter Integration:** Integrate a newsletter feature to allow users to subscribe and receive regular updates, fostering engagement and communication.
+
+## Testing
+
+[Link to separate testing readme](https://github.com/GKopanidis/ci-pp4-hwblog/blob/main/TESTING.md)
 
 ## Design
 
