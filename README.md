@@ -114,29 +114,29 @@ As a Site Owner:
 
 - **Like Button for Blog Posts:** Implement a like button for users to express appreciation for content.
 
-    <img src="docs/readme_images/like_button.png" width="75%" height="75%">
+  <img src="docs/readme_images/like_button.png" width="75%" height="75%">
 
 - **Comment on a Post:** Allow users to comment on posts to engage with content and community.
 
-    <img src="docs/readme_images/comment_post.png" width="75%" height="75%">
+  <img src="docs/readme_images/comment_post.png" width="75%" height="75%">
 
 - **Account Registration:** Enable users to register for an account to access personalized features.
 
-    <img src="docs/readme_images/register.png" width="75%" height="75%">
+  <img src="docs/readme_images/register.png" width="75%" height="75%">
 
 - **View Comments:** Users can view comments on posts to read community discussions.
 
-    <img src="docs/readme_images/view_comments.png" width="75%" height="75%">
+  <img src="docs/readme_images/view_comments.png" width="75%" height="75%">
 
 - **Open a Post:** Provide users the ability to open and read a post in full detail.
 
 - **Explore Paginated Post List:** Allow users to explore posts in a paginated format for better navigation.
 
-    <img src="docs/readme_images/pagination.png" width="75%" height="75%">
+  <img src="docs/readme_images/pagination.png" width="75%" height="75%">
 
 - **Add Post to Favorites:** Users can add posts to a favorites list for easy access later.
 
-    <img src="docs/readme_images/favorite_button.png" width="75%" height="75%">
+  <img src="docs/readme_images/favorite_button.png" width="75%" height="75%">
 
 - **Profile Customization:** Once logged in, users can view and customize their profile, including uploading a picture, changing their username, email, and adding an "About Me" text.
 
@@ -148,61 +148,72 @@ Edit view:
 
 - **Category Viewing and Filtering:** Users can view categories and filter posts by category or view all posts collectively.
 
-    <img src="docs/readme_images/categories.png" width="75%" height="75%">
+  <img src="docs/readme_images/categories.png" width="75%" height="75%">
 
 - **Submit Request for Collaborations:** Enable a feature for submitting collaboration requests.
 
-    <img src="docs/readme_images/submit_request_collab.png" width="75%" height="75%">
+  <img src="docs/readme_images/submit_request_collab.png" width="75%" height="75%">
 
 - **Make the About Page Accessible to Users:** Ensure users can easily access and read the About page.
 
-    <img src="docs/readme_images/about_page.png" width="75%" height="75%">
+  <img src="docs/readme_images/about_page.png" width="75%" height="75%">
 
 - **404 Page Visibility:** Users should encounter a user-friendly 404 page when navigating to a nonexistent link, guiding them back to the active parts of the site.
 
-    <img src="docs/readme_images/404.png" width="75%" height="75%">
+  <img src="docs/readme_images/404.png" width="75%" height="75%">
 
 **For Site Owners:**
 
 - **Store Collaboration Requests:** Safely store submitted collaboration requests for later review.
 
-    <img src="docs/readme_images/admin_collab_req.png" width="75%" height="75%">
+  <img src="docs/readme_images/admin_collab_req.png" width="75%" height="75%">
 
 - **Mark Collaborations as Read:** Ability to mark collaborations requests as read to manage incoming queries.
 
-    <img src="docs/readme_images/collab_mark_read.png" width="75%" height="75%">
+  <img src="docs/readme_images/collab_mark_read.png" width="75%" height="75%">
 
 - **Create an About Page:** Develop an About page to share the mission, vision, and team behind the site.
 
-    <img src="docs/readme_images/create_about_page.png" width="75%" height="75%">
+  <img src="docs/readme_images/create_about_page.png" width="75%" height="75%">
 
 - **Review and Approve Comments:** Implement a system for reviewing and approving user comments to maintain a positive community environment. You can also approve comments as an superuser or staff member inside the post.
 
   Admin panel:
 
-    <img src="docs/readme_images/rev_and_appr_comment_1.png" width="75%" height="75%">
-    <img src="docs/readme_images/rev_and_appr_comment_2.png" width="75%" height="75%">
+  <img src="docs/readme_images/rev_and_appr_comment_1.png" width="75%" height="75%">
+  <img src="docs/readme_images/rev_and_appr_comment_2.png" width="75%" height="75%">
 
   Frontend:
 
-    <img src="docs/readme_images/rev_and_appr_comment_3.png" width="75%" height="75%">
+  <img src="docs/readme_images/rev_and_appr_comment_3.png" width="75%" height="75%">
 
 - **Create Drafts:** Allow the creation of content drafts for future publication.
 
-    <img src="docs/readme_images/post_draft.png" width="75%" height="75%">
+  Admin panel:
+
+  <img src="docs/readme_images/post_draft.png" width="75%" height="75%">
+
+  Frontend:
+
+  <img src="docs/readme_images/create_post_frontend.png" width="75%" height="75%">
 
 - **Manage Posts:** Provide tools to manage (edit, update, delete) existing blog posts.
 
-    <img src="docs/readme_images/manage_posts_1.png" width="75%" height="75%">
-
+  <img src="docs/readme_images/manage_posts_1.png" width="75%" height="75%">
 
 - **Modify or Delete a Post:** Enable the ability to modify or delete posts as needed.
 
-    <img src="docs/readme_images/manage_posts_2.png" width="75%" height="75%">
+  Admin panel:
+
+  <img src="docs/readme_images/manage_posts_2.png" width="75%" height="75%">
+
+  Frontend:
+
+  <img src="docs/readme_images/edit_delete_post.png" width="75%" height="75%">
 
 - **Create Categories:** Develop a system for creating and managing post categories to organize content efficiently.
 
-    <img src="docs/readme_images/create_cat.png" width="75%" height="75%">
+  <img src="docs/readme_images/create_cat.png" width="75%" height="75%">
 
 ### Features Planned
 
@@ -250,10 +261,12 @@ Prioritizing ease of navigation, HW|Blog is equipped with a straightforward and 
 
 ### Wireframes
 
+<img src="docs/readme_images/HW_Blog.png" width="75%" height="75%">
+
 ### ERD
 - Entity relationship diagram was created using [DBVisualizer](https://www.dbvis.com/) and shows the schemas for each of the models and how they are related.
 
-    <img src="docs/readme_images/ERD.png" width="75%" height="75%">
+<img src="docs/readme_images/ERD.png" width="75%" height="75%">
 
 ## Technolgies
 
@@ -396,16 +409,16 @@ Most commonly, forks are used to either propose changes to someone else's projec
 [Stack Overflow](https://stackoverflow.com/)
   - A vital knowledge repository pivotal in the development and troubleshooting phases of the project.
 
-[Django Project Docs DB Model](https://docs.djangoproject.com/en/4.2/topics/db/models/) \
+[Django Project Docs DB Model](https://docs.djangoproject.com/en/4.2/topics/db/models/)
   - Provides comprehensive guidance on constructing database models in Django, facilitating efficient data management.
 
-[Django AllAuth Docs](https://django-allauth.readthedocs.io/en/latest/) \
+[Django AllAuth Docs](https://django-allauth.readthedocs.io/en/latest/)
   - Offers detailed insights into the functionality of Django AllAuth, a versatile authentication solution for Django projects.
 
-[Bootstrap Documentation](https://getbootstrap.com/docs/5.3/getting-started/introduction/) \
+[Bootstrap Documentation](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
   - An indispensable resource for simplifying front-end development with Bootstrap's extensive documentation and component library.
 
-[Gareth McGirr](https://github.com/Gareth-McGirr) \
+[Gareth McGirr](https://github.com/Gareth-McGirr)
   - Acknowledged for providing invaluable guidance throughout the project's development process.
 
 [Back to Top](#index---table-of-contents)
