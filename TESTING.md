@@ -92,7 +92,7 @@ Python code was analyzed using PEP8 and passed without any remarks with the [Cod
          <tr>
          <td align="center">Safari</td>
          <td align="center">✔</td>
-         <td align="center">❌</td>
+         <td align="center">✔</td>
          </tr>
        </tbody>
      </table>
