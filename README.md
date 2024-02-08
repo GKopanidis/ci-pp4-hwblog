@@ -4,7 +4,51 @@ Welcome to HW|Blog - Your Hub for Tech Enthusiasts
 
 Dive into the HWB|log, a dedicated space for all things hardware, coding, 3D printing, Windows, and gaming. Our blog is the go-to destination for enthusiasts and professionals alike, seeking insights, tips, and discussions on the latest in technology.
 
-**Explore Our Content:**
+
+## Index - Table of Contents
+
+- [Explore Our Content](#explore-our-content)
+- [Agile Planning and Development Process](#agile-planning-and-development-process)
+  - [Kanban Board](#kanban-board)
+  - [Epics and User Stories](#epics-and-user-stories)
+  - [Site Goals](#site-goals)
+
+- [Overview](#overview)
+  - [Existing Features](#existing-features)
+  - [Features Planned](#features-planned)
+
+- [Bugs](#bugs)
+  - [Fixed Bugs](#fixed-bugs)
+  - [Unfixed Bugs](#unfixed-bugs)
+
+- [Testing](#testing)
+
+- [Technical Features](#technical-features)
+  - [Responsive Design](#responsive-design)
+  - [CRUD on Posts and Comments](#crud-on-posts-and-comments)
+  - [Streamlined and Intuitive Interface](#streamlined-and-intuitive-interface)
+
+- [Design](#design)
+  - [Wireframes](#wireframes)
+  - [ERD](#erd)
+
+- [Technolgies](#technologies)
+
+- [Deployment](#deployment)
+   - [Version Control](#version-control)
+   - [Heroku Deployment](#heroku-deployment)
+   - [Creating a Database](#creating-a-database)
+   - [The env.py File](#the-envpy-file)
+   - [Run Locally](#run-locally)
+   - [Fork Project](#fork-project)
+      
+- [Credits](#credits)
+
+   - [Media](#media)
+   - [Acknowledgments](#acknowledgments)
+
+
+## **Explore Our Content:**
 
 Hardware Haven: From the latest gadgets to in-depth hardware reviews, we’ve got you covered.
 Code Corner: Discover programming tutorials, development tips, and industry best practices.
@@ -15,6 +59,8 @@ Gaming Galaxy: Join us for game reviews, previews, and everything in between for
 ![Mockup HW|Blog](docs/readme_images/Mockup_HWBlog.png)
 
 [HW|Blog live site](https://ci-pp4-hwblog-402679d73bbc.herokuapp.com/)
+
+[Back to Top](#index---table-of-contents)
 
 ## Agile Planning and Development Process
 The development of HW|Blog followed an Agile methodology, utilizing a Kanban board hosted on GitHub to manage tasks and workflows. This approach made it easier to focus on immediate tasks while also keeping an eye on the broader project goals and progress.
@@ -57,6 +103,8 @@ As a Site Owner:
 - **Innovate:** Continuously enhance the site by introducing new features, content, and interactive elements to improve the user experience.
 - **Support:** Offer support and resources for users to expand their skills and knowledge.
 - **Expand:** Increase the site’s reach to engage a broader audience and build a more comprehensive community.
+
+[Back to Top](#index---table-of-contents)
 
 ## Overview
 
@@ -164,9 +212,39 @@ Edit view:
 
 - **Newsletter Integration:** Integrate a newsletter feature to allow users to subscribe and receive regular updates, fostering engagement and communication.
 
+[Back to Top](#index---table-of-contents)
+
+## Bugs
+
+### Fixed Bugs
+   - No bugs found at this time
+
+### Unfixed Bugs
+   - No bugs found at this time
+
+[Back to Top](#index---table-of-contents)
+
 ## Testing
 
 [Link to separate testing readme](https://github.com/GKopanidis/ci-pp4-hwblog/blob/main/TESTING.md)
+
+[Back to Top](#index---table-of-contents)
+
+## Technical Features
+
+### Responsive Design
+
+HW|Blog was designed with adaptability in mind to ensure a seamless user experience across different devices, such as desktop computers, tablets, and mobile phones.
+
+### CRUD on Posts and Comments
+
+The platform supports comprehensive CRUD (Create, Read, Update, Delete) actions for posts created by superusers and staff members. Users are also able to post comments, modify their comments, and delete their own comments.
+
+### Streamlined and Intuitive Interface
+
+Prioritizing ease of navigation, HW|Blog is equipped with a straightforward and intuitive layout, allowing users to explore the site effortlessly.
+
+[Back to Top](#index---table-of-contents)
 
 ## Design
 
@@ -200,7 +278,6 @@ Edit view:
 - balsamiq
   - wireframes were created using balsamiq from https://balsamiq.com/wireframes/desktop/#
 
-
 **Python Modules Used**
 
 - Django Class based views (ListView, UpdateView, DeleteView, CreateView) - Used for the classes to create, read, update and delete
@@ -227,6 +304,7 @@ Edit view:
 - **urllib3==1.26.18:** A powerful HTTP client for Python, with features for thread safety, connection pooling, client-side SSL/TLS, and more.
 - **whitenoise==5.3.0:** Simplifies static file serving for Python web apps, with integration for Django, Flask, and other WSGI apps.
 
+[Back to Top](#index---table-of-contents)
 
 ## Deployment
 
@@ -305,6 +383,8 @@ Most commonly, forks are used to either propose changes to someone else's projec
 
 - This will create a duplicate of the full project in your GitHub Repository.
 
+[Back to Top](#index---table-of-contents)
+
 ## Credits
 
 [Django Blog](https://github.com/GKopanidis/ci-pp4-wt-django-blog "Django Blog")
@@ -328,6 +408,8 @@ Most commonly, forks are used to either propose changes to someone else's projec
 [Gareth McGirr](https://github.com/Gareth-McGirr) \
   - Acknowledged for providing invaluable guidance throughout the project's development process.
 
+[Back to Top](#index---table-of-contents)
+
 ## Media
 
 **Images**
@@ -336,3 +418,5 @@ Most commonly, forks are used to either propose changes to someone else's projec
 ### Acknowledgments
 
 - Thank you to my mentor [Gareth-McGirr](https://github.com/Gareth-McGirr) who provided me with lots of pointers on resources to help on my 4th project!
+
+[Back to Top](#index---table-of-contents)
