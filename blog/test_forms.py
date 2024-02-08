@@ -3,16 +3,18 @@ from .forms import CommentForm
 
 # Create your tests here.
 
+
 class TestCommentForm(TestCase):
     """
     Test case for the CommentForm.
     """
     def test_form_is_valid(self):
         """
-        Test the validity of a CommentForm instance when providing a valid comment body.
+        Test the validity of a CommentForm instance when providing a
+        valid comment body.
 
-        This function creates a CommentForm instance with a non-empty 'body' field and 
-        checks whether it's considered valid.
+        This function creates a CommentForm instance with a non-empty
+        'body' field and checks whether it's considered valid.
         If the form is valid, the test passes; otherwise, it fails.
 
         """
@@ -21,10 +23,11 @@ class TestCommentForm(TestCase):
 
     def test_form_is_invalid(self):
         """
-        Test the validity of a CommentForm instance when providing an empty comment body.
+        Test the validity of a CommentForm instance when providing
+        an empty comment body.
 
-        This function creates a CommentForm instance with an empty 'body' field 
-        and checks whether it's considered invalid.
+        This function creates a CommentForm instance with an empty
+        'body' field and checks whether it's considered invalid.
         If the form is invalid, the test passes; otherwise, it fails.
 
         """

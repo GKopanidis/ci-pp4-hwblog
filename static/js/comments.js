@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const commentText = document.getElementById("id_body");
     const submitButton = document.getElementById("submitButton");
     // Initialize the delete confirmation modal using Bootstrap's Modal class
-    const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+    const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal")); /*global bootstrap*/
     const deleteConfirm = document.getElementById("deleteConfirm");
     // Check if the user is authenticated by reading a data attribute from the body
     var userIsAuthenticated = document.body.getAttribute('data-user-authenticated') === 'true';

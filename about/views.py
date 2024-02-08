@@ -18,7 +18,6 @@ def about_me(request):
         The most recent instance of :model:`about.About`.
         ``collaborate_form``
             An instance of :form:`about.CollaborateForm`.
-    
     **Template**
     :template:`about/about.html`
     """
@@ -29,7 +28,8 @@ def about_me(request):
             collaborate_form.save()
             messages.add_message(
                 request, messages.SUCCESS,
-                'Collaboration request received! I endeavour to respond within 2 working days.'
+                'Collaboration request received! '
+                'I endeavour to respond within 2 working days.'
             )
     about = About.objects.all().order_by('-updated_on').first()
     collaborate_form = CollaborateForm()
@@ -38,5 +38,5 @@ def about_me(request):
         request,
         "about/about.html",
         {"about": about,
-        "collaborate_form": collaborate_form},
+         "collaborate_form": collaborate_form},
     )

@@ -30,31 +30,35 @@ class Post(models.Model):
     Attributes:
         title (CharField): The title of the blog post, should be unique.
         slug (SlugField): A unique slug for the post's URL.
-        author (ForeignKey): A foreign key relation to the User model 
+        author (ForeignKey): A foreign key relation to the User model
                              representing the post's author.
-        featured_image (CloudinaryField): An image field for the post's featured image.
+        featured_image (CloudinaryField): An image field for the post's
+        featured image.
         content (TextField): The main content of the blog post.
-        created_on (DateTimeField): The date and time when the post was created 
+        created_on (DateTimeField): The date and time when the post was created
                                     (auto-generated).
         status (IntegerField): The status of the post (e.g., draft, published).
         excerpt (TextField): A brief excerpt or summary of the post.
-        updated_on (DateTimeField): The date and time when the post was last updated 
-                                    (auto-generated).
-        categories (ManyToManyField): A many-to-many relationship to Category model
-                                      representing post categories.
+        updated_on (DateTimeField): The date and time when the post was last
+        updated (auto-generated).
+        categories (ManyToManyField): A many-to-many relationship to Category
+        model representing post categories.
 
     Meta:
-        ordering: The default ordering for blog posts, ordered by 'created_on' in descending order.
+        ordering: The default ordering for blog posts, ordered by 'created_on'
+        in descending order.
 
     Methods:
         __str__: Returns a string representation of the blog post.
         likes: Returns all the 'Like' objects associated with this post.
         is_liked_by_user(user): Checks if the post is liked by a specific user.
-        get_favorite_count(): Gets the count of users who have marked this post as a favorite.
+        get_favorite_count(): Gets the count of users who have marked this post
+        as a favorite.
     """
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True, blank=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="blog_posts")
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="blog_posts")
     featured_image = CloudinaryField('image', default='placeholder')
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
@@ -70,10 +74,12 @@ class Post(models.Model):
         return f"{self.title} | written by {self.author}"
 
     def save(self, *args, **kwargs):
-        if not self.slug or not self.id or self.slug != slugify(self.title):
+        if (not self.slug or not self.id or
+                self.slug != slugify(self.title)):
             self.slug = original = slugify(self.title)
             for x in range(1, 100):
-                if not Post.objects.filter(slug=self.slug).exclude(id=self.id).exists():
+                if not Post.objects.filter(slug=self.slug).exclude(
+                        id=self.id).exists():
                     break
                 self.slug = f"{original}-{x}"
         super().save(*args, **kwargs)
@@ -84,7 +90,8 @@ class Post(models.Model):
         Get all 'Like' objects associated with this post.
 
         Returns:
-            QuerySet: A queryset containing all 'Like' objects associated with this post.
+            QuerySet: A queryset containing all 'Like' objects
+            associated with this post.
         """
         return Like.objects.filter(post=self)
 
@@ -115,15 +122,19 @@ class Comment(models.Model):
     This model represents comments on a blog post.
 
     Attributes:
-        post (ForeignKey): A foreign key relation to the Post model representing the commented post.
-        author (ForeignKey): A foreign key relation to the User model representing the comment's 
-                             author.
+        post (ForeignKey): A foreign key relation to the Post model
+        representing the commented post.
+        author (ForeignKey): A foreign key relation to the User model
+                             representing the comment's author.
         body (TextField): The content of the comment.
-        created_on (DateTimeField): The date and time when the comment was created (auto-generated).
-        approved (BooleanField): Indicates if the comment has been approved by the admin or not.
+        created_on (DateTimeField): The date and time when the comment
+        was created (auto-generated).
+        approved (BooleanField): Indicates if the comment has been
+        approved by the admin or not.
 
     Meta:
-        ordering: The default ordering for comments, ordered by 'created_on' in ascending order.
+        ordering: The default ordering for comments, ordered by
+        'created_on' in ascending order.
 
     Methods:
         __str__: Returns a string representation of the comment.
@@ -148,11 +159,12 @@ class Like(models.Model):
     This model represents post likes by users.
 
     Attributes:
-        user (ForeignKey): A foreign key relation to the User model representing 
-                           the user who liked the post.
-        post (ForeignKey): A foreign key relation to the Post model representing 
-                           the liked post.
-        created (DateTimeField): The date and time when the like was created (auto-generated).
+        user (ForeignKey): A foreign key relation to the User model
+        representing the user who liked the post.
+        post (ForeignKey): A foreign key relation to the Post model
+        representing the liked post.
+        created (DateTimeField): The date and time when the like was
+        created (auto-generated).
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -164,16 +176,19 @@ class Favorite(models.Model):
     This model represents posts marked as favorites by users.
 
     Attributes:
-        user (ForeignKey): A foreign key relation to the User model representing the user who 
-                           marked the post as a favorite.
-        post (ForeignKey): A foreign key relation to the Post model representing the favorited post.
+        user (ForeignKey): A foreign key relation to the User model
+        representing the user who marked the post as a favorite.
+        post (ForeignKey): A foreign key relation to the Post model
+        representing the favorited post.
 
     Meta:
-        unique_together: Ensures that a user can mark a post as a favorite only once.
+        unique_together: Ensures that a user can mark a post as a
+        favorite only once.
 
     Methods:
         __str__: Returns a string representation of the favorite.
-        get_favorite_count(): Gets the count of users who have marked the same post as a favorite.
+        get_favorite_count(): Gets the count of users who have marked
+        the same post as a favorite.
     """
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='favorites')
@@ -195,28 +210,33 @@ class Favorite(models.Model):
         """
         return Favorite.objects.filter(post=self.post).count()
 
+
 class UserProfile(models.Model):
     """
     A model representing user profiles.
 
-    This model extends the built-in User model by adding additional fields
-    such as 'profile_image' for the user's profile picture and 'about' for a
-    user's bio.
+    This model extends the built-in User model by adding additional
+    fields such as 'profile_image' for the user's profile picture and
+    'about' for a user's bio.
 
     Attributes:
-        user (OneToOneField): A one-to-one relationship with the User model,
-                              linking each UserProfile to a specific user.
-        profile_image (CloudinaryField): A field for storing the user's profile image.
-                                         It uses Cloudinary for image storage and
-                                         has a default placeholder image.
-        about (TextField): A text field where users can provide information about themselves.
-                          It is optional and can be left blank.
+        user (OneToOneField): A one-to-one relationship with the
+        User model, linking each UserProfile to a specific user.
+        profile_image (CloudinaryField): A field for storing the
+        user's profile image. It uses Cloudinary for image storage and
+        has a default placeholder image.
+        about (TextField): A text field where users can provide information
+        about themselves. It is optional and can be left blank.
 
     Methods:
-        __str__: Returns the username of the associated user, used for display purposes.
+        __str__: Returns the username of the associated user,
+        used for display purposes.
 
     """
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
     profile_image = CloudinaryField('image', default='placeholder')
     about = models.TextField("About me", blank=True)
 

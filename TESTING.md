@@ -14,3 +14,28 @@
 | **Mark Collaborations as Read (Site Owners)** | Site owners should be able to mark collaboration requests as read | Mark a collaboration request as read             | Collaboration request is marked as read                   |
 | **Create an About Page (Site Owners)** | Site owners should be able to create an About page    | Create an About page as a site owner             | About page is created and visible to users               |
 | **Review and Approve Comments (Site Owners)** | Site owners should be able to review and approve user comments | Review and approve a comment as a site owner   | Comment is approved and visible to users                 |
+
+## Additional Validation Testing
+
+In addition to the accessibility tests, several other tests were conducted to ensure the code quality and standard compliance of the project.
+
+### W3C Testing
+
+- **HTML**: Passed without any remarks.
+
+  <img src="docs/readme_images/w3c.png" width="75%" height="75%">
+
+- **CSS**: Passed without any remarks.
+
+  <img src="docs/readme_images/w3c_css.png" width="75%" height="75%">
+
+### JSHint Testing
+
+- **JavaScript** code was analyzed using JSHint and passed without any remarks.
+
+  <img src="docs/readme_images/jshint.png" width="75%" height="75%">
+
+
+### PEP8 Testing
+
+Python code was analyzed using PEP8 and passed without any remarks with the [CodeInstitute Python Linter](https://pep8ci.herokuapp.com/)
