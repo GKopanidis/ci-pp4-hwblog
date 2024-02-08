@@ -1,4 +1,4 @@
-### Manual Testing
+## Manual Testing
 | Feature                           | Expectation                                              | Action                                            | Result                                                   |
 |-----------------------------------|----------------------------------------------------------|---------------------------------------------------|----------------------------------------------------------|
 | **View Comments**                 | Users should be able to view comments on posts           | Navigate to a post with comments                  | Comments are visible                                     |
@@ -39,3 +39,60 @@ In addition to the accessibility tests, several other tests were conducted to en
 ### PEP8 Testing
 
 Python code was analyzed using PEP8 and passed without any remarks with the [CodeInstitute Python Linter](https://pep8ci.herokuapp.com/)
+
+## Lightouse score
+
+- **Index.html**
+
+  <img src="docs/readme_images/html_index.png" width="75%" height="75%">
+
+- **About.html**
+
+  <img src="docs/readme_images/html_about.png" width="75%" height="75%">
+
+- **Profile.html**
+
+  <img src="docs/readme_images/html_profile.png" width="75%" height="75%">
+
+- **Register.html**
+
+  <img src="docs/readme_images/html_register.png" width="75%" height="75%">
+
+- **Login.html**
+
+  <img src="docs/readme_images/html_login.png" width="75%" height="75%">
+
+
+## Tested Browser
+   - Latest versions:
+     <table>
+       <thead>
+       <tr>
+       <th align="center">Browser</th>
+       <th align="center">Layout</th>
+       <th align="center">Functionality</th>
+       </tr>
+       </thead>
+       <tbody>
+         <tr>
+         <td align="center">Chrome</td>
+         <td align="center">✔</td>
+         <td align="center">✔</td>
+         </tr>
+         <tr>
+         <td align="center">Edge</td>
+         <td align="center">✔</td>
+         <td align="center">✔</td>
+         </tr>
+         <tr>
+         <td align="center">Firefox</td>
+         <td align="center">✔</td>
+         <td align="center">✔</td>
+         </tr>
+         <tr>
+         <td align="center">Safari</td>
+         <td align="center">✔</td>
+         <td align="center">❌</td>
+         </tr>
+       </tbody>
+     </table>
