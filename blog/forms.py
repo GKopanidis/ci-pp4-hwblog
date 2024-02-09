@@ -17,9 +17,10 @@ class CommentForm(forms.ModelForm):
         with this form.
         fields (tuple): Defines the single field ('body') included in the form.
     """
+
     class Meta:
         model = Comment
-        fields = ('body',)
+        fields = ("body",)
 
 
 class BlogPostForm(forms.ModelForm):
@@ -37,6 +38,7 @@ class BlogPostForm(forms.ModelForm):
         fields (list): Lists the fields included in the form, integrating
         a custom 'categories' field alongside 'title' and 'content'.
     """
+
     categories = forms.ModelMultipleChoiceField(
         queryset=Category.objects.all(),
         widget=forms.CheckboxSelectMultiple,
@@ -44,7 +46,7 @@ class BlogPostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['title', 'content', 'categories']
+        fields = ["title", "content", "categories"]
 
 
 class FavoriteForm(forms.ModelForm):
@@ -61,6 +63,7 @@ class FavoriteForm(forms.ModelForm):
         fields (list): An empty list, indicating no fields are required
         from the user for this operation.
     """
+
     class Meta:
         model = Favorite
         fields = []
@@ -77,9 +80,10 @@ class UserProfileForm(forms.ModelForm):
         fields (list): Specifies which fields ('profile_image', 'about')
         are editable through this form.
     """
+
     class Meta:
         model = UserProfile
-        fields = ['profile_image', 'about']
+        fields = ["profile_image", "about"]
 
 
 class UserForm(forms.ModelForm):
@@ -92,9 +96,10 @@ class UserForm(forms.ModelForm):
         fields (list): Lists 'username' and 'email' as the fields
         available for editing by the user.
     """
+
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = ["username", "email"]
 
 
 class PostForm(forms.ModelForm):
@@ -112,14 +117,22 @@ class PostForm(forms.ModelForm):
         help_texts (dict): Provides additional guidance for the
         'categories' field, instructing users on multiple selection.
     """
+
     class Meta:
         model = Post
-        fields = ['title', 'featured_image',
-                  'content', 'status', 'excerpt', 'categories']
+        fields = [
+            "title",
+            "featured_image",
+            "content",
+            "status",
+            "excerpt",
+            "categories",
+        ]
         widgets = {
-            'content': SummernoteWidget(),
+            "content": SummernoteWidget(),
         }
         help_texts = {
-            'categories': '(Multiple choices allowed. Hold down "Control", '
+            "categories": '(Multiple choices allowed. Hold down "Control", '
             'or "Command" on a Mac, to select more than one.)',
+            "featured_image": "Optional: If you dont add a picture, it will take a placeholder image.",
         }
