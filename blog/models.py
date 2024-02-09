@@ -17,6 +17,7 @@ class Category(models.Model):
     Methods:
         __str__: Returns a string representation of the category.
     """
+
     name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
@@ -55,17 +56,20 @@ class Post(models.Model):
         get_favorite_count(): Gets the count of users who have marked this post
         as a favorite.
     """
+
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True, blank=True)
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="blog_posts")
-    featured_image = CloudinaryField('image', default='placeholder')
+        User, on_delete=models.CASCADE, related_name="blog_posts"
+    )
+    featured_image = CloudinaryField("image", default="placeholder")
+    featured_image_alt = models.CharField(max_length=255, blank=True)
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
     excerpt = models.TextField(blank=True)
     updated_on = models.DateTimeField(auto_now=True)
-    categories = models.ManyToManyField(Category, related_name='posts')
+    categories = models.ManyToManyField(Category, related_name="posts")
 
     class Meta:
         ordering = ["-created_on"]
@@ -74,12 +78,10 @@ class Post(models.Model):
         return f"{self.title} | written by {self.author}"
 
     def save(self, *args, **kwargs):
-        if (not self.slug or not self.id or
-                self.slug != slugify(self.title)):
+        if not self.slug or not self.id or self.slug != slugify(self.title):
             self.slug = original = slugify(self.title)
             for x in range(1, 100):
-                if not Post.objects.filter(slug=self.slug).exclude(
-                        id=self.id).exists():
+                if not Post.objects.filter(slug=self.slug).exclude(id=self.id).exists():
                     break
                 self.slug = f"{original}-{x}"
         super().save(*args, **kwargs)
@@ -139,10 +141,9 @@ class Comment(models.Model):
     Methods:
         __str__: Returns a string representation of the comment.
     """
-    post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name="comments")
-    author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="comments")
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(default=False)
@@ -166,6 +167,7 @@ class Like(models.Model):
         created (DateTimeField): The date and time when the like was
         created (auto-generated).
     """
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
@@ -190,13 +192,14 @@ class Favorite(models.Model):
         get_favorite_count(): Gets the count of users who have marked
         the same post as a favorite.
     """
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='favorites')
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favorites")
     post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name='favorited_by')
+        Post, on_delete=models.CASCADE, related_name="favorited_by"
+    )
 
     class Meta:
-        unique_together = ('user', 'post')
+        unique_together = ("user", "post")
 
     def __str__(self):
         return f"{self.user.username} favorited {self.post.title}"
@@ -233,11 +236,9 @@ class UserProfile(models.Model):
         used for display purposes.
 
     """
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
-    )
-    profile_image = CloudinaryField('image', default='placeholder')
+
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    profile_image = CloudinaryField("image", default="placeholder")
     about = models.TextField("About me", blank=True)
 
     def __str__(self):

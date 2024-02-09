@@ -249,6 +249,7 @@ body {
 .btn-secondary {
     background-color: #188181;
     color: #fff;
+    margin-bottom: 10px;
 }
 
 .btn-secondary:hover,
@@ -288,6 +289,7 @@ body {
 .btn-del,
 .btn-success {
     margin-left: 10px;
+    margin-bottom: 10px;
 }
 
 .post-delete {
@@ -299,5 +301,16 @@ body {
         width: 100% !important;
         height: auto !important;
         min-height: 300px;
+    }
+
+    iframe {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 300px;
+    }
+
+    img {
+        width: 100% !important;
+        height: auto !important;
     }
 }
