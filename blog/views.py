@@ -162,12 +162,11 @@ def comment_delete(request, slug, comment_id):
     page after successful deletion.
     """
     comment = get_object_or_404(Comment, id=comment_id, post__slug=slug)
-    if request.user == comment.author:
+    if request.user.is_authenticated and (request.user.is_staff or request.user.is_superuser or request.user == comment.author):
         comment.delete()
-        messages.success(request, "Your comment has been deleted.")
+        messages.success(request, "Comment has been deleted.")
     else:
-        messages.error(request,
-                       "You do not have permission to delete this comment.")
+        messages.error(request, "You do not have permission to delete this comment.")
     return redirect('blog:post_detail', slug=slug)
 
 

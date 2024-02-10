@@ -11,8 +11,9 @@
         <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
           {% csrf_token %}
           {{ form|crispy }}
-          <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-secondary">Save</button>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="submit" class="btn btn-secondary me-md-2">Save</button>
+            <a href="{% url 'blog:post_detail' slug=post.slug %}" class="btn btn-cancel me-md-2">Cancel</a>
           </div>
         </form>
       </div>

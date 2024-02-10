@@ -73,28 +73,34 @@
             <h3>Comments:</h3>
             <div class="card-body">
                 {% for comment in comments %}
-                <div class="p-2 comments{% if not comment.approved and comment.author == user %} faded{% elif not comment.approved %} d-none{% endif %}">
+                <div class="p-2 comments">
                     <p class="font-weight-bold">
                         {{ comment.author }} <span class="font-weight-normal">{{ comment.created_on }}</span> wrote:
                     </p>
                     <div id="comment{{ comment.id }}">{{ comment.body | linebreaks }}</div>
+                    
                     {% if not comment.approved %}
                         <div class="alert alert-warning" role="alert">
-                            This comment is awaiting approval.
+                            {% if user == comment.author %}
+                                Your comment is awaiting approval.
+                            {% else %}
+                                This comment is awaiting approval.
+                            {% endif %}
                         </div>
                     {% endif %}
                     <div class="comment-buttons">
-                        {% if user.is_authenticated and comment.author == user %}
+                        {% if user.is_superuser or user.is_staff %}
                             <button class="btn btn-sm btn-danger btn-delete" data-comment_id="{{ comment.id }}">Delete</button>
                             <button class="btn btn-sm btn-secondary btn-edit" data-comment_id="{{ comment.id }}">Edit</button>
-                        {% endif %}
-                        {% if not comment.approved %}
-                            {% if user.is_superuser or user.is_staff %}
+                            {% if not comment.approved %}
                                 <form method="POST" action="{% url 'blog:approve_comment' slug=comment.post.slug comment_id=comment.id %}" class="d-inline">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-sm btn-success">Approve</button>
                                 </form>
                             {% endif %}
+                        {% elif user == comment.author %}
+                            <button class="btn btn-sm btn-danger btn-delete" data-comment_id="{{ comment.id }}">Delete</button>
+                            <button class="btn btn-sm btn-secondary btn-edit" data-comment_id="{{ comment.id }}">Edit</button>
                         {% endif %}
                     </div>
                 </div>

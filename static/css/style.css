@@ -210,6 +210,7 @@ body {
 .btn-edit {
     background-color: #188181;
     color: #fff;
+    font-size: 1rem;
 }
 
 .btn-signup:hover,
@@ -247,6 +248,18 @@ body {
     border: none;
 }
 
+.btn-primary {
+    background-color:#0051ff;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.btn-primary:hover,
+.btn-primary:active {
+    background-color: #fff;
+    color: #0051ff;
+}
+
 .btn-secondary {
     background-color: #188181;
     color: #fff;
@@ -257,6 +270,34 @@ body {
 .btn-secondary:active {
     background-color: #fff;
     color: #23BBBB;
+}
+
+.btn.btn-danger {
+    background-color: #dc3545;
+    color:#fff;
+    margin-bottom: 10px;
+}
+
+.btn.btn-danger:hover,
+.btn.btn-danger:active {
+    background-color: #fff;
+    color: #dc3545;
+}
+
+.btn.btn-success {
+    background-color: #319554;
+    color:#fff;
+    margin-bottom: 10px;
+}
+
+.btn.btn-success:hover,
+.btn.btn-success:active {
+    background-color: #fff;
+    color: #319554;
+}
+
+.post-delete-success {
+    margin-left: 10px;
 }
 
 .faded {
