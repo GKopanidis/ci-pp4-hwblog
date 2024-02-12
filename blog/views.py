@@ -24,7 +24,7 @@ class UserPermissionMixin:
     """
     def has_permission(self, request, *args, **kwargs):
         obj = self.get_object()
-        return obj.author == request.user or request.user.is_superuser
+        return request.user.is_staff
 
 
 class PostList(generic.ListView):
