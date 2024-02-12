@@ -10,9 +10,13 @@ class AboutAdmin(SummernoteModelAdmin):
     """
     summernote_fields = ('content',)
 
+
 def mark_as_read(modeladmin, request, queryset):
     queryset.update(read=True)
+
+
 mark_as_read.short_description = "Mark selected requests as read"
+
 
 @admin.register(CollaborateRequest)
 class CollaborateRequestAdmin(admin.ModelAdmin):

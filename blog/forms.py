@@ -134,5 +134,6 @@ class PostForm(forms.ModelForm):
         help_texts = {
             "categories": '(Multiple choices allowed. Hold down "Control", '
             'or "Command" on a Mac, to select more than one.)',
-            "featured_image": "Optional: If you dont add a picture, it will take a placeholder image.",
+            "featured_image": "Optional: If you dont add a picture, "
+                              "it will take a placeholder image.",
         }

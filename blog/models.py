@@ -81,7 +81,10 @@ class Post(models.Model):
         if not self.slug or not self.id or self.slug != slugify(self.title):
             self.slug = original = slugify(self.title)
             for x in range(1, 100):
-                if not Post.objects.filter(slug=self.slug).exclude(id=self.id).exists():
+                if not (Post.objects
+                            .filter(slug=self.slug)
+                            .exclude(id=self.id)
+                            .exists()):
                     break
                 self.slug = f"{original}-{x}"
         super().save(*args, **kwargs)
@@ -142,8 +145,10 @@ class Comment(models.Model):
         __str__: Returns a string representation of the comment.
     """
 
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name="comments")
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="comments")
     body = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(default=False)
@@ -193,7 +198,8 @@ class Favorite(models.Model):
         the same post as a favorite.
     """
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favorites")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="favorites")
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name="favorited_by"
     )
@@ -237,7 +243,8 @@ class UserProfile(models.Model):
 
     """
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     profile_image = CloudinaryField("image", default="placeholder")
     about = models.TextField("About me", blank=True)
 

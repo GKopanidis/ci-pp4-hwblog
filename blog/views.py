@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic import DeleteView, DetailView, TemplateView
 from django.db.models import Q
+from django.core.exceptions import PermissionDenied
 from .models import Post, Comment, Like, Category, Favorite
 from .forms import CommentForm, UserForm, UserProfileForm, PostForm
 
@@ -22,9 +23,12 @@ class UserPermissionMixin:
         has_permission(request, *args, **kwargs): Returns True if the user
         has permission to perform the action, otherwise False.
     """
-    def has_permission(self, request, *args, **kwargs):
-        obj = self.get_object()
-        return request.user.is_staff
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        if not (request.user.is_superuser or request.user.is_staff):
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
 
 
 class PostList(generic.ListView):
@@ -127,22 +131,16 @@ def comment_edit(request, slug, comment_id):
     comment and redirects to the post detail page.
     """
     comment = get_object_or_404(Comment, id=comment_id, post__slug=slug)
+    if not (request.user == comment.author
+            or request.user.is_staff or request.user.is_superuser):
+        raise PermissionDenied
+
     if request.method == "POST":
         form = CommentForm(request.POST, instance=comment)
-        if form.is_valid() and request.user == comment.author:
-            updated_comment = form.save(commit=False)
-            updated_comment.approved = False
-            updated_comment.save()
-            messages.success(
-                request,
-                "Your comment has been updated and is awaiting approval."
-            )
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Kommentar erfolgreich aktualisiert.")
             return redirect('blog:post_detail', slug=slug)
-        else:
-            messages.error(
-                request,
-                "You do not have permission to edit this comment."
-            )
     else:
         form = CommentForm(instance=comment)
 
@@ -162,11 +160,14 @@ def comment_delete(request, slug, comment_id):
     page after successful deletion.
     """
     comment = get_object_or_404(Comment, id=comment_id, post__slug=slug)
-    if request.user.is_authenticated and (request.user.is_staff or request.user.is_superuser or request.user == comment.author):
+    if request.user.is_authenticated and (request.user.is_staff
+                                          or request.user.is_superuser
+                                          or request.user == comment.author):
         comment.delete()
         messages.success(request, "Comment has been deleted.")
     else:
-        messages.error(request, "You do not have permission to delete this comment.")
+        messages.error(request, "You do not have permission "
+                       "to delete this comment.")
     return redirect('blog:post_detail', slug=slug)
 
 
@@ -366,17 +367,15 @@ class PostEdit(LoginRequiredMixin, UserPermissionMixin, generic.UpdateView):
     template_name = 'blog/post_edit.html'
 
     def get_success_url(self):
-        return reverse_lazy(
-            'blog:post_detail',
-            kwargs={'slug': self.object.slug}
-        )
+        return reverse_lazy('blog:post_detail',
+                            kwargs={'slug': self.object.slug})
 
     def form_valid(self, form):
         messages.success(self.request, "Post updated successfully.")
         return super().form_valid(form)
 
 
-class PostDeleteConfirm(DetailView):
+class PostDeleteConfirm(UserPermissionMixin, LoginRequiredMixin, DetailView):
     """
     A view to confirm the deletion of a blog post.
 
@@ -404,7 +403,7 @@ class PostDelete(LoginRequiredMixin, UserPermissionMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class PostDeleteSuccess(TemplateView):
+class PostDeleteSuccess(UserPermissionMixin, LoginRequiredMixin, TemplateView):
     """
     Displays a success message after a post has been successfully deleted.
 
