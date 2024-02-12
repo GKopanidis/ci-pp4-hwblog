@@ -139,7 +139,7 @@ def comment_edit(request, slug, comment_id):
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
             form.save()
-            messages.success(request, "Kommentar erfolgreich aktualisiert.")
+            messages.success(request, "Comment updated successfully.")
             return redirect('blog:post_detail', slug=slug)
     else:
         form = CommentForm(instance=comment)
