@@ -14,10 +14,14 @@
                     <label for="id_profile_image" class="form-label">Profile Image</label>
                     <div>
                         <strong>Currently:</strong>
-                        {% if "placeholder" in user.userprofile.profile_image.url %}
-                            <img src="{% static 'images/nobody.webp' %}" alt="Placeholder image" style="max-width: 100px; max-height: 100px;">
+                        {% if user.userprofile and user.userprofile.profile_image %}
+                            {% if "placeholder" in user.userprofile.profile_image.url %}
+                                <img src="{% static 'images/nobody.webp' %}" alt="Placeholder image" style="max-width: 100px; max-height: 100px;">
+                            {% else %}
+                                <img src="{{ user.userprofile.profile_image.url }}" alt="Current profile image" style="max-width: 100px; max-height: 100px;">
+                            {% endif %}
                         {% else %}
-                            <img src="{{ user.userprofile.profile_image.url }}" alt="Current profile image" style="max-width: 100px; max-height: 100px;">
+                            <img src="{% static 'images/nobody.webp' %}" alt="No profile image" style="max-width: 100px; max-height: 100px;">
                         {% endif %}
                     </div>
                     {{ profile_form.profile_image }}

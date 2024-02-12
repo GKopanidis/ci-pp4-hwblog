@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic import DeleteView, DetailView, TemplateView
 from django.db.models import Q
 from django.core.exceptions import PermissionDenied
-from .models import Post, Comment, Like, Category, Favorite
+from .models import Post, Comment, Like, Category, Favorite, UserProfile
 from .forms import CommentForm, UserForm, UserProfileForm, PostForm
 
 
@@ -291,10 +291,16 @@ def edit_profile(request):
     to the profile view with a success message. For GET requests, renders the
     profile editing form with existing user information.
     """
+    try:
+        profile = request.user.userprofile
+    except UserProfile.DoesNotExist:
+        UserProfile.objects.create(user=request.user)
+        profile = request.user.userprofile
+
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = UserProfileForm(
-            request.POST, request.FILES, instance=request.user.userprofile
+            request.POST, request.FILES, instance=profile
         )
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
@@ -303,7 +309,7 @@ def edit_profile(request):
             return redirect('blog:profile')
     else:
         user_form = UserForm(instance=request.user)
-        profile_form = UserProfileForm(instance=request.user.userprofile)
+        profile_form = UserProfileForm(instance=profile)
 
     return render(request, 'blog/edit_profile.html', {
         'user_form': user_form,
