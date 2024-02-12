@@ -57,6 +57,8 @@ In addition to the accessibility tests, several other tests were conducted to en
 
 Python code was analyzed using PEP8 and passed without any remarks with the [CodeInstitute Python Linter](https://pep8ci.herokuapp.com/)
 
+  <img src="docs/readme_images/pep8.png" width="75%" height="75%">
+
 ## Lightouse score
 
 - **Index.html**

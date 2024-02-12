@@ -221,6 +221,8 @@ Edit view:
 
 - **Social Media Login:** Implement functionality for users to authenticate and login using their social media accounts, enhancing convenience and accessibility.
 
+  <img src="docs/readme_images/planned_feature.png" width="75%" height="75%">
+
 - **Newsletter Integration:** Integrate a newsletter feature to allow users to subscribe and receive regular updates, fostering engagement and communication.
 
 [Back to Top](#index---table-of-contents)
@@ -359,7 +361,6 @@ The app should now be deployed.
 
 The live link can be found here: [Live Site](https://ci-pp4-hwblog-402679d73bbc.herokuapp.com/)
 
-
 ### Creating a Database
 
 - Log into ElephantSQL.com and access your dashboard.
@@ -367,7 +368,6 @@ The live link can be found here: [Live Site](https://ci-pp4-hwblog-402679d73bbc.
 - Set up a plan, name it, and select the closest data center.
 - Click "Review" and "Create instance".
 - Return to the ElephantSQL dashboard and copy the database URL.
-
 
 ### The env.py File
 - Create an env.py file and ensure it's in .gitignore.
